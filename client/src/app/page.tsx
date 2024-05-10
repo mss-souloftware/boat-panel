@@ -22,7 +22,7 @@ const SignIn: React.FC = () => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/login', { username, password });
+      const response = await axios.post('http://localhost:5000/login', { username, password });
       localStorage.setItem('token', response.data.token);
       // Redirect to dashboard or any other page
       navigate.push('/dashboard');

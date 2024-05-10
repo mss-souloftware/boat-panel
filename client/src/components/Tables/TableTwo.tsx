@@ -47,7 +47,7 @@ const TableTwo = () => {
 
       <div className="grid grid-cols-7 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-7 md:px-6 2xl:px-7.5">
         <div className="col-span-1 flex items-center">
-          <p className="font-medium">Boat Numberw#</p>
+          <p className="font-medium">Boat Number#</p>
         </div>
         <div className="col-span-1 hidden items-center sm:flex">
           <p className="font-medium">Boat Name</p>

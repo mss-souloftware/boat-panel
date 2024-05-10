@@ -158,6 +158,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
               <li>
                 <Link
+                  href="/addboat"
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 mt-2 ${pathname.includes("/addboat") &&
+                    "bg-graydark dark:bg-meta-4"
+                    }`}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 12H20M12 4V20" stroke="#dee4ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  Add New Boat
+                </Link>
+              </li>
+
+              <li>
+                <Link
                   href="/captains"
                   className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 mt-2 ${pathname.includes("/captains") &&
                     "bg-graydark dark:bg-meta-4"
@@ -203,10 +217,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Captains
                 </Link>
               </li>
-
               <li>
                 <Link
-                  href="/addboat"
+                  href="/addcaptain"
                   className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 mt-2 ${pathname.includes("/addboat") &&
                     "bg-graydark dark:bg-meta-4"
                     }`}
@@ -214,7 +227,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4 12H20M12 4V20" stroke="#dee4ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
-                  Add New Boat
+                  Add Captain
                 </Link>
               </li>
             </ul>

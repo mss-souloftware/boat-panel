@@ -17,10 +17,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
+mongoose.connect(process.env.MONGODB_URL).then(() => {
     console.log("Connected to MongoDB");
 }).catch((error) => {
     console.error("Error connecting to MongoDB:", error);
@@ -89,6 +86,69 @@ app.get('/captains', async (req, res) => {
         res.json(captains);
     } catch (error) {
         console.error('Error fetching captains:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.get('/captainsCount', async (req, res) => {
+    try {
+        const count = await CaptainData.countDocuments();
+        res.json(count);
+    } catch (error) {
+        console.error('Error fetching captains:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+const Boats = mongoose.model('Boats', {
+    name: String,
+    number: String,
+    currentLocation: String,
+    nextLocation: String,
+    oprationType: String,
+    arrivalTime: String,
+    departureTime: String,
+    obm: String,
+    manifested: String,
+    qSupply: String,
+    qRemaining: String,
+});
+
+// Route to add boats
+app.post('/addBoat', async (req, res) => {
+    try {
+        const { name, number, currentLocation, nextLocation, oprationType, arrivalTime, departureTime, obm, manifested, qSupply, qRemaining } = req.body;
+        const newBoats = new Boats({
+            name, number, currentLocation, nextLocation, oprationType, arrivalTime, departureTime, obm, manifested, qSupply, qRemaining
+        });
+        await newBoats.save();
+        res.json({ message: 'Boat added successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to add Boat' });
+    }
+});
+
+
+const BoatData = mongoose.model('Boats');
+
+// Endpoint to get all Boatss
+app.get('/boats', async (req, res) => {
+    try {
+        const boats = await BoatData.find();
+        res.json(boats);
+    } catch (error) {
+        console.error('Error fetching Boats:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.get('/boatsCount', async (req, res) => {
+    try {
+        const bcount = await BoatData.countDocuments();
+        res.json(bcount);
+    } catch (error) {
+        console.error('Error fetching boats:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
