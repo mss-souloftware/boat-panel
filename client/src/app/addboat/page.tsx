@@ -1,5 +1,6 @@
 "use client";
-import { Metadata } from "next";
+import { useState, ChangeEvent, FormEvent } from 'react';
+import axios from 'axios';
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
 import CheckboxFour from "@/components/Checkboxes/CheckboxFour";
@@ -22,6 +23,48 @@ const SelectGroupTwo: React.FC = () => {
 
 
 export default function Home() {
+
+    const [name, setName] = useState('');
+    const [number, setNumber] = useState('');
+    const [currentLocation, setcurrentLocation] = useState('');
+    const [nextLocation, setnextLocation] = useState('');
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        switch (name) {
+            case 'name':
+                setName(value);
+                break;
+            case 'number':
+                setNumber(value);
+                break;
+            case 'currentLocation':
+                setcurrentLocation(value);
+                break;
+            case 'nextLocation':
+                setnextLocation(value);
+                break;
+            default:
+                break;
+        }
+    };
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            const boatData = { name, number, currentLocation, nextLocation };
+            await axios.post('http://localhost:5000/addBoat', boatData);
+            console.log('Boat added successfully');
+            setName('');
+            setNumber('');
+            setcurrentLocation('');
+            setnextLocation('');
+        } catch (error) {
+            console.error('Error adding Boat:', error);
+        }
+    };
+
+
     return (
         <>
             <DefaultLayout>
@@ -32,7 +75,7 @@ export default function Home() {
                             Add New Boat
                         </h3>
                     </div>
-                    <form>
+                    <form  onSubmit={handleSubmit}>
                         <div className="grid grid-cols-2 gap-5.5 p-6.5">
                             <div className="col-span-1">
                                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -42,6 +85,9 @@ export default function Home() {
                                     type="text"
                                     placeholder="Boat Name"
                                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                    onChange={handleChange}
+                                    value={name}
+                                    name="name"
                                 />
                             </div>
 
@@ -53,6 +99,9 @@ export default function Home() {
                                     type="text"
                                     placeholder="Boat Number"
                                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                    onChange={handleChange}
+                                    value={number}
+                                    name="number"
                                 />
                             </div>
 
@@ -156,6 +205,9 @@ export default function Home() {
                                     type="text"
                                     placeholder="Current location"
                                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                    onChange={handleChange}
+                                    value={currentLocation}
+                                    name="currentLocation"
                                 />
                             </div>
 
@@ -167,6 +219,9 @@ export default function Home() {
                                     type="text"
                                     placeholder="Next Location"
                                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                    onChange={handleChange}
+                                    value={nextLocation}
+                                    name="nextLocation"
                                 />
                             </div>
 
