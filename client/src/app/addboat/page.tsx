@@ -5,29 +5,24 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
 import CheckboxFour from "@/components/Checkboxes/CheckboxFour";
 
-// export const metadata: Metadata = {
-//     title:
-//         "Add New Boat - Boat Dashboard",
-// };
-
-/*
-const SelectGroupTwo: React.FC = () => {
-    const [selectedOption, setSelectedOption] = useState<string>("");
-    const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
-
-    const changeTextColor = () => {
-        setIsOptionSelected(true);
-    };
-}
-*/
-
-
 export default function Home() {
 
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
     const [currentLocation, setcurrentLocation] = useState('');
     const [nextLocation, setnextLocation] = useState('');
+    const [cement_s_qnty, setcement_s_qnty] = useState('');
+    const [cement_r_qnty, setcement_r_qnty] = useState('');
+    const [blended_s_qnty, setblended_s_qnty] = useState('');
+    const [blended_r_qnty, setblended_r_qnty] = useState('');
+    const [safra_s_qnty, setsafra_s_qnty] = useState('');
+    const [safra_r_qnty, setsafra_r_qnty] = useState('');
+    const [fresh_water_s_qnty, setfresh_water_s_qnty] = useState('');
+    const [fresh_water_r_qnty, setfresh_water_r_qnty] = useState('');
+    const [wbm_s_qnty, setwbm_s_qnty] = useState('');
+    const [wbm_r_qnty, setwbm_r_qnty] = useState('');
+    const [brine_s_qnty, setbrine_s_qnty] = useState('');
+    const [brine_r_qnty, setbrine_r_qnty] = useState('');
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -43,6 +38,42 @@ export default function Home() {
                 break;
             case 'nextLocation':
                 setnextLocation(value);
+                break;
+            case 'cement_s_qnty':
+                setcement_s_qnty(value);
+                break;
+            case 'cement_r_qnty':
+                setcement_r_qnty(value);
+                break;
+            case 'blended_s_qnty':
+                setblended_s_qnty(value);
+                break;
+            case 'blended_r_qnty':
+                setblended_r_qnty(value);
+                break;
+            case 'safra_s_qnty':
+                setsafra_s_qnty(value);
+                break;
+            case 'safra_r_qnty':
+                setsafra_r_qnty(value);
+                break;
+            case 'fresh_water_s_qnty':
+                setfresh_water_s_qnty(value);
+                break;
+            case 'fresh_water_r_qnty':
+                setfresh_water_r_qnty(value);
+                break;
+            case 'wbm_s_qnty':
+                setwbm_s_qnty(value);
+                break;
+            case 'wbm_r_qnty':
+                setwbm_r_qnty(value);
+                break;
+            case 'brine_s_qnty':
+                setbrine_s_qnty(value);
+                break;
+            case 'brine_r_qnty':
+                setbrine_r_qnty(value);
                 break;
             default:
                 break;
@@ -75,7 +106,7 @@ export default function Home() {
                             Add New Boat
                         </h3>
                     </div>
-                    <form  onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit}>
                         <div className="grid grid-cols-2 gap-5.5 p-6.5">
                             <div className="col-span-1">
                                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -396,6 +427,9 @@ export default function Home() {
                                                 type="text"
                                                 placeholder="Quantity will Supply"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={cement_s_qnty}
+                                                name="cement_s_qnty"
                                             />
                                         </div>
 
@@ -407,6 +441,9 @@ export default function Home() {
                                                 type="text"
                                                 placeholder="Remaining Quantity"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={cement_r_qnty}
+                                                name="cement_r_qnty"
                                             />
                                         </div>
                                     </div>
@@ -441,6 +478,9 @@ export default function Home() {
                                                 type="text"
                                                 placeholder="Quantity will Supply"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={blended_s_qnty}
+                                                name="blended_s_qnty"
                                             />
                                         </div>
 
@@ -452,6 +492,9 @@ export default function Home() {
                                                 type="text"
                                                 placeholder="Remaining Quantity"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={blended_r_qnty}
+                                                name="blended_r_qnty"
                                             />
                                         </div>
                                     </div>
@@ -486,6 +529,9 @@ export default function Home() {
                                                 type="text"
                                                 placeholder="Quantity will Supply"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={safra_s_qnty}
+                                                name="safra_s_qnty"
                                             />
                                         </div>
 
@@ -497,6 +543,9 @@ export default function Home() {
                                                 type="text"
                                                 placeholder="Remaining Quantity"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={safra_r_qnty}
+                                                name="safra_r_qnty"
                                             />
                                         </div>
                                     </div>
@@ -531,6 +580,9 @@ export default function Home() {
                                                 type="text"
                                                 placeholder="Quantity will Supply"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={fresh_water_s_qnty}
+                                                name="fresh_water_s_qnty"
                                             />
                                         </div>
 
@@ -542,6 +594,9 @@ export default function Home() {
                                                 type="text"
                                                 placeholder="Remaining Quantity"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={fresh_water_r_qnty}
+                                                name="fresh_water_r_qnty"
                                             />
                                         </div>
                                     </div>
@@ -577,6 +632,9 @@ export default function Home() {
                                                 type="text"
                                                 placeholder="Quantity will Supply"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={wbm_s_qnty}
+                                                name="wbm_s_qnty"
                                             />
                                         </div>
 
@@ -588,6 +646,9 @@ export default function Home() {
                                                 type="text"
                                                 placeholder="Remaining Quantity"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={wbm_r_qnty}
+                                                name="wbm_r_qnty"
                                             />
                                         </div>
                                     </div>
@@ -622,6 +683,9 @@ export default function Home() {
                                                 type="text"
                                                 placeholder="Quantity will Supply"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={brine_s_qnty}
+                                                name="brine_s_qnty"
                                             />
                                         </div>
 
@@ -633,6 +697,9 @@ export default function Home() {
                                                 type="text"
                                                 placeholder="Remaining Quantity"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={brine_r_qnty}
+                                                name="brine_r_qnty"
                                             />
                                         </div>
                                     </div>
@@ -698,7 +765,7 @@ export default function Home() {
                             <div className="mb-5">
                                 <input
                                     type="submit"
-                                    value="Add Captain"
+                                    value="Add Boat"
                                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                                 />
                             </div>
