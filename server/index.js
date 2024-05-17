@@ -100,27 +100,32 @@ app.get('/captainsCount', async (req, res) => {
     }
 });
 
+// Baot DELETE endpoint
+app.delete('/captains/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deletedCaptain = await CaptainData.findByIdAndDelete(id);
+        if (!deletedCaptain) {
+            return res.status(404).json({ error: 'Captain not found' });
+        }
+        res.json({ message: 'Captain deleted successfully' });
+    } catch (error) {
+        console.error(`Error deleting Captain with ID ${id}:`, error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 
 const Boats = mongoose.model('Boats', {
-    name: String,
-    number: String,
-    currentLocation: String,
-    nextLocation: String,
-    oprationType: String,
-    arrivalTime: String,
-    departureTime: String,
-    obm: String,
-    manifested: String,
-    qSupply: String,
-    qRemaining: String,
+    name: String, number: String, currentLocation: String, nextLocation: String, cement_s_qnty: String, cement_r_qnty: String, blended_s_qnty: String, blended_r_qnty: String, safra_s_qnty: String, safra_r_qnty: String, fresh_water_s_qnty: String, fresh_water_r_qnty: String, wbm_s_qnty: String, wbm_r_qnty: String, brine_s_qnty: String, brine_r_qnty: String, boatCategory: String, selectedCaptain: String, operationType: String,
 });
 
 // Route to add boats
 app.post('/addBoat', async (req, res) => {
     try {
-        const { name, number, currentLocation, nextLocation, oprationType, arrivalTime, departureTime, obm, manifested, qSupply, qRemaining } = req.body;
+        const { name, number, currentLocation, nextLocation, cement_s_qnty, cement_r_qnty, blended_s_qnty, blended_r_qnty, safra_s_qnty, safra_r_qnty, fresh_water_s_qnty, fresh_water_r_qnty, wbm_s_qnty, wbm_r_qnty, brine_s_qnty, brine_r_qnty, boatCategory, selectedCaptain, operationType } = req.body;
         const newBoats = new Boats({
-            name, number, currentLocation, nextLocation, oprationType, arrivalTime, departureTime, obm, manifested, qSupply, qRemaining
+            name, number, currentLocation, nextLocation, cement_s_qnty, cement_r_qnty, blended_s_qnty, blended_r_qnty, safra_s_qnty, safra_r_qnty, fresh_water_s_qnty, fresh_water_r_qnty, wbm_s_qnty, wbm_r_qnty, brine_s_qnty, brine_r_qnty, boatCategory, selectedCaptain, operationType
         });
         await newBoats.save();
         res.json({ message: 'Boat added successfully' });
@@ -149,6 +154,36 @@ app.get('/boatsCount', async (req, res) => {
         res.json(bcount);
     } catch (error) {
         console.error('Error fetching boats:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.get('/boats/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const boat = await BoatData.findById(id);
+        if (!boat) {
+            return res.status(404).json({ error: 'Boat not found' });
+        }
+        res.json(boat);
+    } catch (error) {
+        console.error(`Error fetching Boat with ID ${id}:`, error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+// Baot DELETE endpoint
+app.delete('/boats/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deletedBoat = await BoatData.findByIdAndDelete(id);
+        if (!deletedBoat) {
+            return res.status(404).json({ error: 'Boat not found' });
+        }
+        res.json({ message: 'Boat deleted successfully' });
+    } catch (error) {
+        console.error(`Error deleting Boat with ID ${id}:`, error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });

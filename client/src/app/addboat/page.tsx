@@ -1,5 +1,5 @@
 "use client";
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import axios from 'axios';
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
@@ -23,6 +23,11 @@ export default function Home() {
     const [wbm_r_qnty, setwbm_r_qnty] = useState('');
     const [brine_s_qnty, setbrine_s_qnty] = useState('');
     const [brine_r_qnty, setbrine_r_qnty] = useState('');
+
+    const [boatCategory, setBoatCategory] = useState('');
+    const [selectedCaptain, setSelectedCaptain] = useState('');
+    const [operationType, setOperationType] = useState('');
+
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -80,20 +85,64 @@ export default function Home() {
         }
     };
 
+    const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        setBoatCategory(e.target.value);
+    };
+
+    const handleCaptainChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedCaptain(e.target.value);
+    }; 
+    
+    const handleOperationType = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setOperationType(e.target.value);
+    };
+
+
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const boatData = { name, number, currentLocation, nextLocation };
+            const boatData = { name, number, currentLocation, nextLocation, cement_s_qnty, cement_r_qnty, blended_s_qnty, blended_r_qnty, safra_s_qnty, safra_r_qnty, fresh_water_s_qnty, fresh_water_r_qnty, wbm_s_qnty, wbm_r_qnty, brine_s_qnty, brine_r_qnty, boatCategory, selectedCaptain };
             await axios.post('http://localhost:5000/addBoat', boatData);
             console.log('Boat added successfully');
             setName('');
             setNumber('');
             setcurrentLocation('');
             setnextLocation('');
+            setcement_s_qnty('');
+            setcement_r_qnty('');
+            setblended_s_qnty('');
+            setblended_r_qnty('');
+            setsafra_s_qnty('');
+            setsafra_r_qnty('');
+            setfresh_water_s_qnty('');
+            setfresh_water_r_qnty('');
+            setwbm_s_qnty('');
+            setwbm_r_qnty('');
+            setbrine_s_qnty('');
+            setbrine_r_qnty('');
+            setBoatCategory('');
+            setSelectedCaptain('');
         } catch (error) {
             console.error('Error adding Boat:', error);
         }
     };
+
+    interface Captain {
+        name: string;
+    }
+
+    const [captains, setCaptains] = useState<Captain[]>([]);
+    useEffect(() => {
+        const fetchCaptains = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/captains');
+                setCaptains(response.data);
+            } catch (error) {
+                console.error('Error fetching captains:', error);
+            }
+        };
+        fetchCaptains();
+    }, []);
 
 
     return (
@@ -143,9 +192,11 @@ export default function Home() {
                                 <div className="relative z-20 bg-white dark:bg-form-input">
                                     <select
                                         className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input`}
+                                        value={boatCategory}
+                                        onChange={handleCategoryChange}
                                     >
                                         <option value="" disabled className="text-body dark:text-bodydark">
-                                            Select Country
+                                            Select Category
                                         </option>
                                         <option value="A" className="text-body dark:text-bodydark">
                                             A
@@ -189,22 +240,17 @@ export default function Home() {
                                 <div className="relative z-20 bg-white dark:bg-form-input">
                                     <select
                                         className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input`}
+                                        value={selectedCaptain}
+                                        onChange={handleCaptainChange}
                                     >
-                                        <option value="" disabled className="text-body dark:text-bodydark">
-                                            Select Country
+                                        <option value="" disabled selected className="text-body dark:text-bodydark">
+                                            Select Captain
                                         </option>
-                                        <option value="Offloading" className="text-body dark:text-bodydark">
-                                            Offloading
-                                        </option>
-                                        <option value="Backloading " className="text-body dark:text-bodydark">
-                                            Backloading
-                                        </option>
-                                        <option value="Bulks supply or receive" className="text-body dark:text-bodydark">
-                                            Bulks supply or receive
-                                        </option>
-                                        <option value="Offloading cargo and Bulks" className="text-body dark:text-bodydark">
-                                            Offloading cargo and Bulks
-                                        </option>
+                                        {captains.map((captain, index) => (
+                                            <option key={index} value={captain.name} className="text-body dark:text-bodydark">
+                                                {captain.name}
+                                            </option>
+                                        ))}
                                     </select>
 
                                     <span className="absolute right-4 top-1/2 z-10 -translate-y-1/2">
@@ -262,16 +308,11 @@ export default function Home() {
                                 </label>
                                 <div className="relative z-20 bg-white dark:bg-form-input">
                                     <select
-                                        // value={selectedOption}
-                                        // onChange={(e) => {
-                                        //     setSelectedOption(e.target.value);
-                                        //     changeTextColor();
-                                        // }}
-                                        // className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-12 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${isOptionSelected ? "text-black dark:text-white" : ""
-                                        //     }`}
                                         className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input`}
+                                        value={operationType}
+                                        onChange={handleOperationType}
                                     >
-                                        <option value="" disabled className="text-body dark:text-bodydark">
+                                        <option value="" disabled selected className="text-body dark:text-bodydark">
                                             Select Country
                                         </option>
                                         <option value="Offloading" className="text-body dark:text-bodydark">
