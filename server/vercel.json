@@ -1,9 +1,9 @@
 {
     "version": 2,
-    "name": "nodejs-mysql",
+    "name": "boat-panel",
     "builds": [
         {
-            "src": "/",
+            "src": "./index.js",
             "use": "@vercel/node"
         }
     ],
