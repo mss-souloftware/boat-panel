@@ -15,7 +15,7 @@ const AllBoats = () => {
   useEffect(() => {
     const fetchBoats = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/boats');
+        const response = await axios.get('https://boat-server.vercel.app/boats');
         setBoats(response.data);
       } catch (error) {
         console.error('Error fetching Boats:', error);
@@ -26,7 +26,7 @@ const AllBoats = () => {
 
   const handleDelete = async (id: String) => {
     try {
-      await axios.delete(`http://localhost:5000/boats/${id}`);
+      await axios.delete(`https://boat-server.vercel.app/boats/${id}`);
       setBoats(boats.filter(boat => boat._id !== id));
     } catch (error) {
       console.error('Error deleting Boat:', error);

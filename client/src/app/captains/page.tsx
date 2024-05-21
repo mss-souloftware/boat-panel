@@ -18,7 +18,7 @@ export default function Home() {
   useEffect(() => {
     const fetchCaptains = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/captains');
+        const response = await axios.get('https://boat-server.vercel.app/captains');
         setCaptains(response.data);
       } catch (error) {
         console.error('Error fetching captains:', error);
@@ -29,7 +29,7 @@ export default function Home() {
 
   const handleDelete = async (id: String) => {
     try {
-      await axios.delete(`http://localhost:5000/captains/${id}`);
+      await axios.delete(`https://boat-server.vercel.app/captains/${id}`);
       setCaptains(captains.filter(captain => captain._id !== id));
     } catch (error) {
       console.error('Error deleting Captain:', error);

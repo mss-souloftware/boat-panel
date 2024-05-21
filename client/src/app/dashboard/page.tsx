@@ -25,7 +25,7 @@ export default function Home() {
   useEffect(() => {
     const fetchCaptainsCount = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/captainsCount');
+        const response = await axios.get('https://boat-server.vercel.app/captainsCount');
         setCaptainsCount(response.data);
       } catch (error) {
         console.error('Error fetching captains count:', error);
@@ -38,7 +38,7 @@ export default function Home() {
   useEffect(() => {
     const fetchBoatCount = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/boatsCount');
+        const response = await axios.get('https://boat-server.vercel.app/boatsCount');
         setBoatCount(response.data);
         console.log(response.data);
       } catch (error) {
@@ -53,7 +53,7 @@ export default function Home() {
   useEffect(() => {
     const fetchBoats = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/boats');
+        const response = await axios.get('https://boat-server.vercel.app/boats');
         setBoats(response.data);
       } catch (error) {
         console.error('Error fetching Boats:', error);

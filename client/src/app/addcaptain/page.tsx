@@ -34,7 +34,7 @@ export default function Home() {
         e.preventDefault();
         try {
             const captainData = { name, phone, email, country };
-            await axios.post('http://localhost:5000/addCaptain', captainData);
+            await axios.post('https://boat-server.vercel.app/addCaptain', captainData);
             console.log('Captain added successfully');
             // Clear the form fields after successful submission
             setName('');

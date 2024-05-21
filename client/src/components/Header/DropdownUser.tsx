@@ -40,7 +40,7 @@ const DropdownUser = () => {
   const handleLogout = async () => {
     try {
       // Send logout request to the backend
-      await axios.post('http://localhost:5000/logout');
+      await axios.post('https://boat-server.vercel.app/logout');
 
       // Remove JWT token from local storage
       localStorage.removeItem('token');

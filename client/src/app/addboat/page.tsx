@@ -102,7 +102,7 @@ export default function Home() {
         e.preventDefault();
         try {
             const boatData = { name, number, currentLocation, nextLocation, cement_s_qnty, cement_r_qnty, blended_s_qnty, blended_r_qnty, safra_s_qnty, safra_r_qnty, fresh_water_s_qnty, fresh_water_r_qnty, wbm_s_qnty, wbm_r_qnty, brine_s_qnty, brine_r_qnty, boatCategory, selectedCaptain };
-            await axios.post('http://localhost:5000/addBoat', boatData);
+            await axios.post('https://boat-server.vercel.app/addBoat', boatData);
             console.log('Boat added successfully');
             setName('');
             setNumber('');
@@ -135,7 +135,7 @@ export default function Home() {
     useEffect(() => {
         const fetchCaptains = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/captains');
+                const response = await axios.get('https://boat-server.vercel.app/captains');
                 setCaptains(response.data);
             } catch (error) {
                 console.error('Error fetching captains:', error);

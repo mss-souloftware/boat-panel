@@ -33,7 +33,7 @@ export default function BoatDetails() {
         if (!id) return; // Ensure ID is defined before proceeding
         async function fetchBoat() {
             try {
-                const res = await fetch(`http://localhost:5000/boats/${id}`);
+                const res = await fetch(`https://boat-server.vercel.app/boats/${id}`);
                 if (res.ok) {
                     const data = await res.json();
                     setBoat(data);
