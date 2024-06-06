@@ -2,18 +2,27 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { buildUrl } from '../../../utils/buildUrl';
+
+
+const path = '/captains';
+const url = buildUrl(path);
 
 export default function Home() {
 
-    const [name, setName] = useState('');
+    const [fullName, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         switch (name) {
-            case 'name':
+            case 'fullName':
                 setName(value);
                 break;
             case 'phone':
@@ -21,6 +30,12 @@ export default function Home() {
                 break;
             case 'email':
                 setEmail(value);
+                break;
+            case 'password':
+                setPassword(value);
+                break;
+            case 'city':
+                setCity(value);
                 break;
             case 'country':
                 setCountry(value);
@@ -33,16 +48,27 @@ export default function Home() {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const captainData = { name, phone, email, country };
-            await axios.post('https://boat-server.vercel.app/addCaptain', captainData);
-            console.log('Captain added successfully');
-            // Clear the form fields after successful submission
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('Authorization Token not provided.');
+            }
+            const captainData = { fullName, phone, email, password, city, country };
+            await axios.post(url, captainData, {
+
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            toast.success('Captain added successfully');
             setName('');
             setPhone('');
             setEmail('');
+            setPassword('');
+            setCity('');
             setCountry('');
         } catch (error) {
-            console.error('Error adding captain:', error);
+            toast.error("Error adding captian");
+            console.log(error)
         }
     };
 
@@ -69,8 +95,8 @@ export default function Home() {
                                     placeholder="Captain Name"
                                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                     onChange={handleChange}
-                                    value={name}
-                                    name="name"
+                                    value={fullName}
+                                    name="fullName"
                                 />
                             </div>
 
@@ -84,7 +110,7 @@ export default function Home() {
                                     placeholder="Phone"
                                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                     onChange={handleChange}
-                                     value={phone}
+                                    value={phone}
                                     name="phone"
                                 />
                             </div>
@@ -102,15 +128,42 @@ export default function Home() {
                                     name="email"
                                 />
                             </div>
+                            <div className="col-span-1">
+                                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                                    Password
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="Password"
+                                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                    onChange={handleChange}
+                                    value={password}
+                                    name="password"
+                                />
+                            </div>
 
                             <div className="col-span-1">
                                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    City & Country
+                                    City
                                 </label>
                                 <input
                                     type="text"
                                     required
-                                    placeholder="City & Country"
+                                    placeholder="City"
+                                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                    onChange={handleChange}
+                                    value={city}
+                                    name="city"
+                                />
+                            </div>
+                            <div className="col-span-1">
+                                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                                    Country
+                                </label>
+                                <input
+                                    type="text"
+                                    required
+                                    placeholder="Country"
                                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                     onChange={handleChange}
                                     value={country}

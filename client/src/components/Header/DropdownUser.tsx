@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { buildUrl } from '../../../utils/buildUrl';
+
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -52,6 +54,50 @@ const DropdownUser = () => {
     }
   };
 
+  interface Profile {
+    _id: String;
+    fullName: string;
+  }
+
+  const [profile, setProfile] = useState<Profile[]>([]);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      let url: string | null = null;
+      const getUserRole = localStorage.getItem('role');
+
+      if (getUserRole === 'ADMIN') {
+        const path = '/admins/me';
+        url = buildUrl(path);
+      } else {
+        const path = '/captains/me';
+        url = buildUrl(path);
+      }
+
+      try {
+        const token = localStorage.getItem('token');
+        console.log(token);
+        if (!token) {
+          throw new Error('Authorization Token not provided.');
+        }
+
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        setProfile(response.data.data.user);
+        console.log('profile data', response.data.data.user);
+      } catch (error) {
+        console.error('Error fetching Name:', error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+
   return (
     <div className="relative">
       <Link
@@ -62,9 +108,11 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            John Doe
+            {profile.fullName}
           </span>
-          <span className="block text-xs">Admin</span>
+          <span className="block text-xs">
+            {localStorage.getItem('role')}
+          </span>
         </span>
 
         <span className="h-12 w-12 rounded-full">

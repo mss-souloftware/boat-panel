@@ -1,15 +1,17 @@
 // authRequired.js
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
 const AuthRequired = ({ authChildren }) => {
   const router = useRouter();
+  const pathName = usePathname();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      router.push('/');
+    if(pathName !== '/' && pathName !== '/admin') {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        router.push('/');
+      }
     }
   }, []);
 
