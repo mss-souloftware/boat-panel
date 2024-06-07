@@ -12,21 +12,33 @@ const url = buildUrl(path);
 interface TotalsCount {
   totalNumberOfBoats: number;
   totalNumberOfCaptains: number;
+  totalBoatsCategoryWise: any;
+  A: number,
+  B: number,
+  C: number,
+  D: number,
 }
 
 
 interface Boats {
-  _id: String; name: String; number: String; currentLocation: String; nextLocation: String; cement_s_qnty: String; cement_r_qnty: String; blended_s_qnty: String; blended_r_qnty: String; safra_s_qnty: String; safra_r_qnty: String; fresh_water_s_qnty: String; fresh_water_r_qnty: String; wbm_s_qnty: String; wbm_r_qnty: String; brine_s_qnty: String; brine_r_qnty: String; boatCategory: String, selectedCaptain: String, operationType: String,
+  _id: String; name: String; number: String; currentLocation: String; nextLocation: String; cement_s_qnty: String; cement_r_qnty: String; blended_s_qnty: String; blended_r_qnty: String; safra_s_qnty: String; safra_r_qnty: String; fresh_water_s_qnty: String; fresh_water_r_qnty: String; wbm_s_qnty: String; wbm_r_qnty: String; brine_s_qnty: String; brine_r_qnty: String; category: String, captainId: String, operationType: String,
 }
 
 export default function Home() {
-  const [totalsCount, setTotalCounts] = useState<TotalsCount>({ totalNumberOfBoats: 0, totalNumberOfCaptains: 0, });
+  const [totalsCount, setTotalCounts] = useState<TotalsCount>({ totalNumberOfBoats: 0, totalNumberOfCaptains: 0, totalBoatsCategoryWise: {}, A: 0, B: 0, C: 0, D: 0, });
 
   useEffect(() => {
     const fetchTotalCounts = async () => {
       try {
-        const token = localStorage.getItem('token');
-        if (!token) {
+        let storedData = localStorage.getItem('userData');
+        let token = null;
+        if (storedData) {
+          let userData = JSON.parse(storedData);
+          token = userData.token;
+          if (!token) {
+            throw new Error('Authorization Token not provided.');
+          }
+        } else {
           throw new Error('Authorization Token not provided.');
         }
         const response = await axios.get(url, {
@@ -47,12 +59,32 @@ export default function Home() {
 
   useEffect(() => {
     const fetchBoats = async () => {
+      const path = '/boats';
+      const url = buildUrl(path);
       try {
-        const response = await axios.get('https://boat-server.vercel.app/boats');
-        setBoats(response.data);
+        let storedData = localStorage.getItem('userData');
+        let token = null;
+
+        if (storedData) {
+          let userData = JSON.parse(storedData);
+          token = userData.token;
+          console.log(`user token:: ${token}`)
+          if (!token) {
+            throw new Error('Authorization Token not provided.');
+          }
+        }
+
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        setBoats(response.data.data.boats);
       } catch (error) {
-        console.error('Error fetching Boats:', error);
+        console.error('Error fetching boats:', error);
       }
+
     };
     fetchBoats();
   }, []);
@@ -71,6 +103,24 @@ export default function Home() {
           </CardDataStats>
 
         </div>
+
+        <div className="grid grid-cols-4 gap-4 mt-4">
+          <CardDataStats title="Boats" total={totalsCount.totalBoatsCategoryWise.A} rate="">
+            <b>A</b>
+          </CardDataStats>
+          <CardDataStats title="Boats" total={totalsCount.totalBoatsCategoryWise.B} rate="">
+            <b>B</b>
+          </CardDataStats>
+          <CardDataStats title="Boats" total={totalsCount.totalBoatsCategoryWise.C} rate="">
+            <b>C</b>
+          </CardDataStats>
+
+          <CardDataStats title="Boats" total={totalsCount.totalBoatsCategoryWise.D} rate="">
+            <b>D</b>
+          </CardDataStats>
+
+        </div>
+
         <div className="mt-5"></div>
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="px-4 py-6 md:px-6 xl:px-7.5">
@@ -127,10 +177,10 @@ export default function Home() {
                 <p className="text-sm text-black dark:text-white">{boat.nextLocation}</p>
               </div>
               <div className="col-span-1 flex-column items-center pr-4">
-                <p className="text-sm text-black dark:text-white text-center">{boat.boatCategory}</p>
+                <p className="text-sm text-black dark:text-white text-center">{boat.category}</p>
               </div>
               <div className="col-span-1 flex items-center">
-                <p className="text-sm text-black dark:text-white">{boat.selectedCaptain}</p>
+                <p className="text-sm text-black dark:text-white">{boat.captainId}</p>
               </div>
               <div className="col-span-1 flex items-center">
                 <p className="text-sm text-black dark:text-white">{boat.operationType}</p>

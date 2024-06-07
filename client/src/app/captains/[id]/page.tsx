@@ -25,9 +25,14 @@ export default function BoatDetails() {
             const path = `/captains/${id}`;
             const url = buildUrl(path);
             try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    throw new Error('Authorization Token not provided.');
+                let storedData = localStorage.getItem('userData');
+                let token = null;
+                if (storedData) {
+                    let userData = JSON.parse(storedData);
+                    token = userData.token;
+                    if (!token) {
+                        throw new Error('Authorization Token not provided.');
+                    }
                 }
                 const res = await fetch(url, {
                     headers: {
@@ -37,7 +42,7 @@ export default function BoatDetails() {
                 if (res.ok) {
                     const data = await res.json();
                     setBoat(data.data.captain);
-                    console.log(data);
+                    // console.log(data);
                 } else {
                     console.error('Failed to fetch captain:', res.status);
                 }

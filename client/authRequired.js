@@ -7,11 +7,18 @@ const AuthRequired = ({ authChildren }) => {
   const pathName = usePathname();
 
   useEffect(() => {
-    if(pathName !== '/' && pathName !== '/admin') {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        router.push('/');
+    if (pathName !== '/' && pathName !== '/admin') {
+      let storedData = localStorage.getItem('userData');
+      if (storedData) {
+        let userData = JSON.parse(storedData);
+        let token = userData.token;
+        
+        if (!token) {
+          router.push('/');
+        }
       }
+
+      
     }
   }, []);
 

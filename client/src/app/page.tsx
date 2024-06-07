@@ -21,12 +21,17 @@ const SignIn: React.FC = () => {
 
     const loginPromise = axios.post(url, { email, password })
       .then(response => {
-        let token = response.data.data.token
-        let role = response.data.data.user.role
-        localStorage.setItem('token', token);
-        localStorage.setItem('role', role);
+
+        let userData = {
+          token: response.data.data.token,
+          role: response.data.data.user.role,
+          id: response.data.data.user.userId,
+        };
+
+        localStorage.setItem('userData', JSON.stringify(userData));
+
         if (response.status === 200) {
-          navigate.push('/dashboard');
+          navigate.push('/boat');
         }
       });
 
@@ -43,7 +48,7 @@ const SignIn: React.FC = () => {
   return (
     <div className="rounded-sm border border-stroke bg-white h-lvh dark:border-strokedark dark:bg-boxdark">
       <div className="flex flex-wrap items-center">
-       
+
 
         <div className="w-full border-stroke dark:border-strokedark mx-auto xl:w-1/2">
           <div className="w-full p-4 sm:p-12.5 xl:p-17.5">

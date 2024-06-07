@@ -26,8 +26,14 @@ export default function Home() {
   useEffect(() => {
     const fetchCaptains = async () => {
       try {
-        const token = localStorage.getItem('token');
-        console.log(token);
+        let storedData = localStorage.getItem('userData');
+        let token = null;
+
+        if (storedData) {
+          let userData = JSON.parse(storedData);
+          token = userData.token;
+        }
+
         if (!token) {
           throw new Error('Authorization Token not provided.');
         }
@@ -39,7 +45,6 @@ export default function Home() {
         });
 
         setCaptains(response.data.data.captains);
-        console.log('captains data', response.data);
       } catch (error) {
         console.error('Error fetching captains:', error);
         toast.error(`Error fetching captains`);
@@ -52,8 +57,15 @@ export default function Home() {
     const path = `/captains/${id}`;
     const url = buildUrl(path);
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
+      let storedData = localStorage.getItem('userData');
+      let token = null;
+      if (storedData) {
+        let userData = JSON.parse(storedData);
+        token = userData.token;
+        if (!token) {
+          throw new Error('Authorization Token not provided.');
+        }
+      } else {
         throw new Error('Authorization Token not provided.');
       }
       await axios.delete(url, {

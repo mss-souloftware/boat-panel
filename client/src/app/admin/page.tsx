@@ -23,10 +23,15 @@ const SignIn: React.FC = () => {
 
     const loginPromise = axios.post(url, { username, password })
       .then(response => {
-        let token = response.data.data.token
-        let role = response.data.data.user.role
-        localStorage.setItem('token', token);
-        localStorage.setItem('role', role);
+
+        let userData = {
+          token: response.data.data.token,
+          role: response.data.data.user.role,
+          id: response.data.data.user.userId,
+        };
+
+        localStorage.setItem('userData', JSON.stringify(userData));
+        
         if (response.status === 200) {
           navigate.push('/dashboard');
         }

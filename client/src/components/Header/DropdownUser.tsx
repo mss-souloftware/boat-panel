@@ -41,13 +41,7 @@ const DropdownUser = () => {
   const router = useRouter();
   const handleLogout = async () => {
     try {
-      // Send logout request to the backend
-      await axios.post('https://boat-server.vercel.app/logout');
-
-      // Remove JWT token from local storage
-      localStorage.removeItem('token');
-
-      // Redirect the user to the login page or any other page
+      localStorage.removeItem('userData');
       router.push('/');
     } catch (error) {
       console.error('Logout failed', error);
@@ -60,11 +54,35 @@ const DropdownUser = () => {
   }
 
   const [profile, setProfile] = useState<Profile>();
+  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
       let url: string | null = null;
-      const getUserRole = localStorage.getItem('role');
+      let storedData = localStorage.getItem('userData');
+
+      if (!storedData) {
+        console.error('No user data found in local storage');
+        return;
+      }
+
+      let userData;
+      try {
+        userData = JSON.parse(storedData);
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        return;
+      }
+
+      let token = userData.token;
+      if (!token) {
+        console.error('Authorization Token not provided.');
+        return;
+      }
+
+      let getUserRole = userData.role;
+      setUserRole(getUserRole);
+      // console.log(getUserRole);
 
       if (getUserRole === 'ADMIN') {
         const path = '/admins/me';
@@ -75,12 +93,6 @@ const DropdownUser = () => {
       }
 
       try {
-        const token = localStorage.getItem('token');
-        console.log(token);
-        if (!token) {
-          throw new Error('Authorization Token not provided.');
-        }
-
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${token}`
@@ -88,9 +100,9 @@ const DropdownUser = () => {
         });
 
         setProfile(response.data.data.user);
-        console.log('profile data', response.data.data.user);
+        // console.log('profile data', response.data.data.user);
       } catch (error) {
-        console.error('Error fetching Name:', error);
+        console.error('Error fetching profile:', error);
       }
     };
 
@@ -111,7 +123,7 @@ const DropdownUser = () => {
             {profile?.fullName}
           </span>
           <span className="block text-xs">
-            {localStorage.getItem('role')}
+            {userRole}
           </span>
         </span>
 

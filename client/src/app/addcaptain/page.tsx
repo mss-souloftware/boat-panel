@@ -48,10 +48,16 @@ export default function Home() {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                throw new Error('Authorization Token not provided.');
+            let storedData = localStorage.getItem('userData');
+            let token = null;
+            if (storedData) {
+                let userData = JSON.parse(storedData);
+                token = userData.token;
+                if (!token) {
+                    throw new Error('Authorization Token not provided.');
+                }
             }
+
             const captainData = { fullName, phone, email, password, city, country };
             await axios.post(url, captainData, {
 
