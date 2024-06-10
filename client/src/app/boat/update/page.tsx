@@ -4,6 +4,8 @@ import axios from 'axios';
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
 import CheckboxFour from "@/components/Checkboxes/CheckboxFour";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { buildUrl } from '../../../../utils/buildUrl';
 
 export default function Home() {
@@ -192,11 +194,13 @@ export default function Home() {
                         Authorization: `Bearer ${token}`
                     }
                 });
+                toast.success('Boat update successfully');
                 console.log('Boat update successfully');
 
             }
 
         } catch (error) {
+            toast.error("Error updating Boat");
             console.error('Error submitting data', error);
         }
     };

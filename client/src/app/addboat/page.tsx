@@ -115,7 +115,7 @@ export default function Home() {
                 }
             });
             toast.success('Boat added successfully');
-            console.log('Boat added successfully');
+            // console.log('Boat added successfully');
             setName('');
             setNumber('');
             setcurrentLocation('');
