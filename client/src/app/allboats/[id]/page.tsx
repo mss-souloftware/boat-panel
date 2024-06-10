@@ -5,7 +5,14 @@ import { useParams } from 'next/navigation';
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { buildUrl } from '../../../../utils/buildUrl';
 
-interface Boat {
+interface Boats {
+    OBM: any;
+    Cement: any;
+    BlendedCement: any;
+    Safra: any;
+    FreshWater: any;
+    WBM: any;
+    Brine: any;
     name: string;
     number: string;
     currentLocation: string,
@@ -24,11 +31,19 @@ interface Boat {
     brine_r_qnty: string,
     category: string,
     captainId: string,
+    operationType: string,
+    arrivalTime: string,
+    departureTime: string,
 }
 
 export default function BoatDetails() {
     const { id } = useParams();
-    const [boat, setBoat] = useState<Boat | null>(null);
+    const [boat, setBoat] = useState<Boats | null>(null);
+
+    const covertISOtoDate = (date: string) => {
+        let dateConvert = new Date(date);
+        return `${dateConvert.getDate()}-${dateConvert.getMonth() + 1}-${dateConvert.getFullYear()}`
+    }
 
     useEffect(() => {
         if (!id) return; // Ensure ID is defined before proceeding
@@ -127,7 +142,7 @@ export default function BoatDetails() {
                         <p className="font-medium">Opearion Type:</p>
                     </div>
                     <div className="col-span-3 flex items-center">
-                        <p className="">Bulks supply or receive</p>
+                        <p className="">{boat.operationType}</p>
                     </div>
                 </div>
                 <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
@@ -135,7 +150,7 @@ export default function BoatDetails() {
                         <p className="font-medium">Arrival Time:</p>
                     </div>
                     <div className="col-span-3 flex items-center">
-                        <p className="">05:10 PM</p>
+                        <p className="">{covertISOtoDate(boat.arrivalTime)}</p>
                     </div>
                 </div>
                 <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
@@ -143,7 +158,7 @@ export default function BoatDetails() {
                         <p className="font-medium">Departure Time:</p>
                     </div>
                     <div className="col-span-3 flex items-center">
-                        <p className="">08:42 AM</p>
+                        <p className="">{covertISOtoDate(boat.departureTime)}</p>
                     </div>
                 </div>
                 <div className="grid grid-cols-5 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
@@ -151,22 +166,22 @@ export default function BoatDetails() {
                         <p className="font-medium">OBM On board:</p>
                     </div>
                     <div className="col-span-1 flex items-center">
-                        <p className="">Barite Relihnet</p>
+                        <p className="">{boat.OBM.opearionType}</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Manifested/ instructed:</p>
                         <br></br>
-                        <p className="">NO</p>
+                        <p>{boat.OBM.manifested ? 'Yes' : 'No'}</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Quantity will Supply:</p>
                         <br></br>
-                        <p className="">-</p>
+                        <p className="">{boat.OBM.quantitySupplied}</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Remaining Quantity:</p>
                         <br></br>
-                        <p className="">-</p>
+                        <p className="">{boat.OBM.remainingQuantity}</p>
                     </div>
                 </div>
 
@@ -175,17 +190,17 @@ export default function BoatDetails() {
                         <p className="font-medium">Cement On board:</p>
                     </div>
                     <div className="col-span-1 flex items-center">
-                        <p className="">Yes</p>
+                        <p>{boat.Cement.manifested ? 'Yes' : 'No'}</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Quantity will Supply:</p>
                         <br></br>
-                        <p className="">{boat.cement_s_qnty}</p>
+                        <p className="">{boat.Cement.quantitySupplied}</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Remaining Quantity:</p>
                         <br></br>
-                        <p className="">{boat.cement_r_qnty}</p>
+                        <p className="">{boat.Cement.remainingQuantity}</p>
                     </div>
                 </div>
 
@@ -194,17 +209,17 @@ export default function BoatDetails() {
                         <p className="font-medium">Blended Cmenet On board:</p>
                     </div>
                     <div className="col-span-1 flex items-center">
-                        <p className="">Yes</p>
+                        <p>{boat.BlendedCement.manifested ? 'Yes' : 'No'}</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Quantity will Supply:</p>
                         <br></br>
-                        <p className="">{boat.blended_s_qnty}</p>
+                        <p className="">{boat.BlendedCement.quantitySupplied}</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Remaining Quantity:</p>
                         <br></br>
-                        <p className="">{boat.blended_r_qnty}</p>
+                        <p className="">{boat.BlendedCement.remainingQuantity}</p>
                     </div>
                 </div>
 
@@ -213,17 +228,17 @@ export default function BoatDetails() {
                         <p className="font-medium">Safra On board:</p>
                     </div>
                     <div className="col-span-1 flex items-center">
-                        <p className="">Yes</p>
+                        <p>{boat.Safra.manifested ? 'Yes' : 'No'}</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Quantity will Supply:</p>
                         <br></br>
-                        <p className="">{boat.safra_s_qnty}</p>
+                        <p className="">{boat.Safra.quantitySupplied}</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Remaining Quantity:</p>
                         <br></br>
-                        <p className="">{boat.safra_r_qnty}</p>
+                        <p className="">{boat.Safra.remainingQuantity}</p>
                     </div>
                 </div>
 
@@ -232,17 +247,17 @@ export default function BoatDetails() {
                         <p className="font-medium">Diesel On board:</p>
                     </div>
                     <div className="col-span-1 flex items-center">
-                        <p className="">Yes</p>
+                        <p className="">-</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Quantity will Supply:</p>
                         <br></br>
-                        <p className="">{boat.fresh_water_s_qnty}</p>
+                        <p className="">-</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Remaining Quantity:</p>
                         <br></br>
-                        <p className="">{boat.fresh_water_r_qnty}</p>
+                        <p className="">-</p>
                     </div>
                 </div>
 
@@ -251,17 +266,17 @@ export default function BoatDetails() {
                         <p className="font-medium">Freash Water On board:</p>
                     </div>
                     <div className="col-span-1 flex items-center">
-                        <p className="">Yes</p>
+                        <p>{boat.FreshWater.manifested ? 'Yes' : 'No'}</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Quantity will Supply:</p>
                         <br></br>
-                        <p className="">{boat.wbm_s_qnty}</p>
+                        <p className="">{boat.FreshWater.quantitySupplied}</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Remaining Quantity:</p>
                         <br></br>
-                        <p className="">{boat.wbm_r_qnty}</p>
+                        <p className="">{boat.FreshWater.remainingQuantity}</p>
                     </div>
                 </div>
 
@@ -270,17 +285,17 @@ export default function BoatDetails() {
                         <p className="font-medium">WBM On board:</p>
                     </div>
                     <div className="col-span-1 flex items-center">
-                        <p className="">Yes</p>
+                        <p>{boat.WBM.manifested ? 'Yes' : 'No'}</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Quantity will Supply:</p>
                         <br></br>
-                        <p className="">{boat.brine_s_qnty}</p>
+                        <p className="">{boat.WBM.quantitySupplied}</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Remaining Quantity:</p>
                         <br></br>
-                        <p className="">{boat.brine_s_qnty}</p>
+                        <p className="">{boat.WBM.remainingQuantity}</p>
                     </div>
                 </div>
 
@@ -289,36 +304,17 @@ export default function BoatDetails() {
                         <p className="font-medium">Brine On board:</p>
                     </div>
                     <div className="col-span-1 flex items-center">
-                        <p className="">Yes</p>
+                        <p>{boat.Brine.manifested ? 'Yes' : 'No'}</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Quantity will Supply:</p>
                         <br></br>
-                        <p className="">-</p>
+                        <p className="">{boat.Brine.quantitySupplied}</p>
                     </div>
                     <div className="col-span-1">
                         <p className="font-medium">Remaining Quantity:</p>
                         <br></br>
-                        <p className="">-</p>
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
-                    <div className="col-span-1 flex items-center">
-                        <p className="font-medium">Brine On board:</p>
-                    </div>
-                    <div className="col-span-1 flex items-center">
-                        <p className="">Yes</p>
-                    </div>
-                    <div className="col-span-1">
-                        <p className="font-medium">Quantity will Supply:</p>
-                        <br></br>
-                        <p className="">-</p>
-                    </div>
-                    <div className="col-span-1">
-                        <p className="font-medium">Remaining Quantity:</p>
-                        <br></br>
-                        <p className="">-</p>
+                        <p className="">{boat.Brine.remainingQuantity}</p>
                     </div>
                 </div>
             </div>

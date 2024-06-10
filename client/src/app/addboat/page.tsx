@@ -4,6 +4,14 @@ import axios from 'axios';
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
 import CheckboxFour from "@/components/Checkboxes/CheckboxFour";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { buildUrl } from '../../../utils/buildUrl';
+
+
+const path = '/boats';
+const url = buildUrl(path);
+
 
 export default function Home() {
 
@@ -11,23 +19,23 @@ export default function Home() {
     const [number, setNumber] = useState('');
     const [currentLocation, setcurrentLocation] = useState('');
     const [nextLocation, setnextLocation] = useState('');
-    const [cement_s_qnty, setcement_s_qnty] = useState('');
-    const [cement_r_qnty, setcement_r_qnty] = useState('');
-    const [blended_s_qnty, setblended_s_qnty] = useState('');
-    const [blended_r_qnty, setblended_r_qnty] = useState('');
-    const [safra_s_qnty, setsafra_s_qnty] = useState('');
-    const [safra_r_qnty, setsafra_r_qnty] = useState('');
-    const [fresh_water_s_qnty, setfresh_water_s_qnty] = useState('');
-    const [fresh_water_r_qnty, setfresh_water_r_qnty] = useState('');
-    const [wbm_s_qnty, setwbm_s_qnty] = useState('');
-    const [wbm_r_qnty, setwbm_r_qnty] = useState('');
-    const [brine_s_qnty, setbrine_s_qnty] = useState('');
-    const [brine_r_qnty, setbrine_r_qnty] = useState('');
 
-    const [boatCategory, setBoatCategory] = useState('');
-    const [selectedCaptain, setSelectedCaptain] = useState('');
+    const [category, setBoatCategory] = useState('');
+    const [captainId, setSelectedCaptain] = useState<number>(0);
     const [operationType, setOperationType] = useState('');
+    const [arrivalTime, setArrivalTime] = useState('');
+    const [departureTime, setDepartureTime] = useState('');
 
+    const [obmType, setObmType] = useState('');
+    const [obmSupply, setObmSupply] = useState<number>(0);
+    const [obmRemaining, setObmRemaining] = useState<number>(0);
+    const [obmManifested, setObmManifested] = useState(false);
+
+
+
+    const handleRadioChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setObmManifested(e.target.value === 'true');
+    };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -44,41 +52,17 @@ export default function Home() {
             case 'nextLocation':
                 setnextLocation(value);
                 break;
-            case 'cement_s_qnty':
-                setcement_s_qnty(value);
+            case 'arrivalTime':
+                setArrivalTime(value);
                 break;
-            case 'cement_r_qnty':
-                setcement_r_qnty(value);
+            case 'departureTime':
+                setDepartureTime(value);
                 break;
-            case 'blended_s_qnty':
-                setblended_s_qnty(value);
+            case 'obmSupply':
+                setObmSupply(Number(value));
                 break;
-            case 'blended_r_qnty':
-                setblended_r_qnty(value);
-                break;
-            case 'safra_s_qnty':
-                setsafra_s_qnty(value);
-                break;
-            case 'safra_r_qnty':
-                setsafra_r_qnty(value);
-                break;
-            case 'fresh_water_s_qnty':
-                setfresh_water_s_qnty(value);
-                break;
-            case 'fresh_water_r_qnty':
-                setfresh_water_r_qnty(value);
-                break;
-            case 'wbm_s_qnty':
-                setwbm_s_qnty(value);
-                break;
-            case 'wbm_r_qnty':
-                setwbm_r_qnty(value);
-                break;
-            case 'brine_s_qnty':
-                setbrine_s_qnty(value);
-                break;
-            case 'brine_r_qnty':
-                setbrine_r_qnty(value);
+            case 'obmRemaining':
+                setObmRemaining(Number(value));
                 break;
             default:
                 break;
@@ -90,55 +74,100 @@ export default function Home() {
     };
 
     const handleCaptainChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedCaptain(e.target.value);
-    }; 
-    
+        let captainId: string | number = e.target.value
+        captainId = parseInt(captainId, 10) as number
+        setSelectedCaptain(captainId);
+    };
+
     const handleOperationType = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setOperationType(e.target.value);
     };
 
+    const handleObmType = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setObmType(e.target.value);
+    };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const boatData = { name, number, currentLocation, nextLocation, cement_s_qnty, cement_r_qnty, blended_s_qnty, blended_r_qnty, safra_s_qnty, safra_r_qnty, fresh_water_s_qnty, fresh_water_r_qnty, wbm_s_qnty, wbm_r_qnty, brine_s_qnty, brine_r_qnty, boatCategory, selectedCaptain };
-            await axios.post('https://boat-server.vercel.app/addBoat', boatData);
+            const boatData = {
+                name, number, currentLocation, nextLocation, category, captainId, operationType, arrivalTime, departureTime, OBM: {
+                    opearionType: obmType,
+                    manifested: obmManifested,
+                    quantitySupplied: obmSupply,
+                    remainingQuantity: obmRemaining,
+                }
+            };
+
+            let storedData = localStorage.getItem('userData');
+            let token = null;
+            if (storedData) {
+                let userData = JSON.parse(storedData);
+                token = userData.token;
+                if (!token) {
+                    throw new Error('Authorization Token not provided.');
+                }
+            }
+
+            await axios.post(url, { ...boatData, arrivalTime: (new Date(arrivalTime)).toISOString(), departureTime: (new Date(departureTime)).toISOString() }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            toast.success('Boat added successfully');
             console.log('Boat added successfully');
             setName('');
             setNumber('');
             setcurrentLocation('');
             setnextLocation('');
-            setcement_s_qnty('');
-            setcement_r_qnty('');
-            setblended_s_qnty('');
-            setblended_r_qnty('');
-            setsafra_s_qnty('');
-            setsafra_r_qnty('');
-            setfresh_water_s_qnty('');
-            setfresh_water_r_qnty('');
-            setwbm_s_qnty('');
-            setwbm_r_qnty('');
-            setbrine_s_qnty('');
-            setbrine_r_qnty('');
             setBoatCategory('');
-            setSelectedCaptain('');
+            setSelectedCaptain(0);
+            setObmSupply(0);
+            setObmRemaining(0);
+            setArrivalTime('');
+            setDepartureTime('');
         } catch (error) {
-            console.error('Error adding Boat:', error);
+            toast.error("Error adding Boat");
+            console.log(error)
         }
     };
 
     interface Captain {
-        name: string;
+        fullName: string;
+        id: number;
     }
 
     const [captains, setCaptains] = useState<Captain[]>([]);
+
     useEffect(() => {
         const fetchCaptains = async () => {
+
+            const path = '/captains';
+            const url = buildUrl(path);
+
             try {
-                const response = await axios.get('https://boat-server.vercel.app/captains');
-                setCaptains(response.data);
+                let storedData = localStorage.getItem('userData');
+                let token = null;
+
+                if (storedData) {
+                    let userData = JSON.parse(storedData);
+                    token = userData.token;
+                }
+
+                if (!token) {
+                    throw new Error('Authorization Token not provided.');
+                }
+
+                const response = await axios.get(url, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                setCaptains(response.data.data.captains);
             } catch (error) {
                 console.error('Error fetching captains:', error);
+                toast.error(`Error fetching captains`);
             }
         };
         fetchCaptains();
@@ -192,7 +221,7 @@ export default function Home() {
                                 <div className="relative z-20 bg-white dark:bg-form-input">
                                     <select
                                         className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input`}
-                                        value={boatCategory}
+                                        value={category}
                                         onChange={handleCategoryChange}
                                     >
                                         <option value="" disabled className="text-body dark:text-bodydark">
@@ -240,15 +269,15 @@ export default function Home() {
                                 <div className="relative z-20 bg-white dark:bg-form-input">
                                     <select
                                         className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input`}
-                                        value={selectedCaptain}
+                                        value={captainId}
                                         onChange={handleCaptainChange}
                                     >
                                         <option value="" disabled selected className="text-body dark:text-bodydark">
                                             Select Captain
                                         </option>
                                         {captains.map((captain, index) => (
-                                            <option key={index} value={captain.name} className="text-body dark:text-bodydark">
-                                                {captain.name}
+                                            <option key={index} value={captain.id} className="text-body dark:text-bodydark">
+                                                {captain.fullName}
                                             </option>
                                         ))}
                                     </select>
@@ -352,10 +381,30 @@ export default function Home() {
 
                             <div className="col-span-1 grid grid-cols-2 gap-5">
                                 <div className="col-span-1">
-                                    <DatePickerOne title="Arrival Time" />
+                                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                                        Arrival Time
+                                    </label>
+                                    <input
+                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                        placeholder="mm/dd/yyyy"
+                                        type="date"
+                                        value={arrivalTime}
+                                        onChange={handleChange}
+                                        name="arrivalTime"
+                                    />
                                 </div>
                                 <div className="col-span-1">
-                                    <DatePickerOne title="Departure Time" />
+                                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                                        Departure Time
+                                    </label>
+                                    <input
+                                        className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                                        placeholder="mm/dd/yyyy"
+                                        type="date"
+                                        value={departureTime}
+                                        onChange={handleChange}
+                                        name="departureTime"
+                                    />
                                 </div>
                             </div>
 
@@ -366,17 +415,12 @@ export default function Home() {
                                     </label>
                                     <div className="relative z-20 bg-white dark:bg-form-input">
                                         <select
-                                            // value={selectedOption}
-                                            // onChange={(e) => {
-                                            //     setSelectedOption(e.target.value);
-                                            //     changeTextColor();
-                                            // }}
-                                            // className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-12 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${isOptionSelected ? "text-black dark:text-white" : ""
-                                            //     }`}
                                             className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input`}
+                                            value={obmType}
+                                            onChange={handleObmType}
                                         >
                                             <option value="" disabled className="text-body dark:text-bodydark">
-                                                Select Country
+                                                Select Option
                                             </option>
                                             <option value="Barite free" className="text-body dark:text-bodydark">
                                                 Barite free
@@ -417,8 +461,26 @@ export default function Home() {
                                         Manifested/ instructed
                                     </label>
                                     <div className="flex gap-4">
-                                        <CheckboxFour title={"Yes"} />
-                                        <CheckboxFour title={"No"} />
+                                        <label>
+                                            <input
+                                                className='mr-1'
+                                                type="radio"
+                                                value="true"
+                                                checked={obmManifested === true}
+                                                onChange={handleRadioChange}
+                                            />
+                                            Yes
+                                        </label>
+                                        <label>
+                                            <input
+                                                className='mr-1'
+                                                type="radio"
+                                                value="false"
+                                                checked={obmManifested === false}
+                                                onChange={handleRadioChange}
+                                            />
+                                            No
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -429,9 +491,12 @@ export default function Home() {
                                         Quantity will Supply
                                     </label>
                                     <input
-                                        type="text"
+                                        type="number"
                                         placeholder="Quantity will Supply"
                                         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                        onChange={handleChange}
+                                        value={obmSupply}
+                                        name="obmSupply"
                                     />
                                 </div>
 
@@ -440,365 +505,13 @@ export default function Home() {
                                         Remaining Quantity
                                     </label>
                                     <input
-                                        type="text"
+                                        type="number"
                                         placeholder="Remaining Quantity"
                                         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                        onChange={handleChange}
+                                        value={obmRemaining}
+                                        name="obmRemaining"
                                     />
-                                </div>
-                            </div>
-
-                            <div className="col-span-2 my-4 h-[1px] bg-slate-500"></div>
-
-
-                            <div className="col-span-2 gap-5 grid grid-cols-2">
-                                <div className="col-span-2">
-                                    <div className="border-b border-stroke  py-4 dark:border-strokedark">
-                                        <h3 className="font-medium text-black dark:text-white">
-                                            Cement On board
-                                        </h3>
-                                    </div>
-                                </div>
-                                <div className="col-span-2 gap-5 grid grid-cols-2">
-                                    <div className="col-span-1 gap-5 grid grid-cols-2">
-                                        <div className="col-span-1">
-                                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                                Quantity will Supply
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder="Quantity will Supply"
-                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                                onChange={handleChange}
-                                                value={cement_s_qnty}
-                                                name="cement_s_qnty"
-                                            />
-                                        </div>
-
-                                        <div className="col-span-1">
-                                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                                Remaining Quantity
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder="Remaining Quantity"
-                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                                onChange={handleChange}
-                                                value={cement_r_qnty}
-                                                name="cement_r_qnty"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="col-span-1">
-                                        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                            Manifested/ instructed
-                                        </label>
-                                        <div className="flex gap-5">
-                                            <CheckboxFour title={"Yes"} />
-                                            <CheckboxFour title={"No"} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-span-2 gap-5 grid grid-cols-2">
-                                <div className="col-span-2">
-                                    <div className="border-b border-stroke  py-4 dark:border-strokedark">
-                                        <h3 className="font-medium text-black dark:text-white">
-                                            Blended Cmenet On board
-                                        </h3>
-                                    </div>
-                                </div>
-                                <div className="col-span-2 gap-5 grid grid-cols-2">
-                                    <div className="col-span-1 gap-5 grid grid-cols-2">
-                                        <div className="col-span-1">
-                                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                                Quantity will Supply
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder="Quantity will Supply"
-                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                                onChange={handleChange}
-                                                value={blended_s_qnty}
-                                                name="blended_s_qnty"
-                                            />
-                                        </div>
-
-                                        <div className="col-span-1">
-                                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                                Remaining Quantity
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder="Remaining Quantity"
-                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                                onChange={handleChange}
-                                                value={blended_r_qnty}
-                                                name="blended_r_qnty"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="col-span-1">
-                                        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                            Manifested/ instructed
-                                        </label>
-                                        <div className="flex gap-5">
-                                            <CheckboxFour title={"Yes"} />
-                                            <CheckboxFour title={"No"} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-span-2 gap-5 grid grid-cols-2">
-                                <div className="col-span-2">
-                                    <div className="border-b border-stroke  py-4 dark:border-strokedark">
-                                        <h3 className="font-medium text-black dark:text-white">
-                                            Safra On board
-                                        </h3>
-                                    </div>
-                                </div>
-                                <div className="col-span-2 gap-5 grid grid-cols-2">
-                                    <div className="col-span-1 gap-5 grid grid-cols-2">
-                                        <div className="col-span-1">
-                                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                                Quantity will Supply
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder="Quantity will Supply"
-                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                                onChange={handleChange}
-                                                value={safra_s_qnty}
-                                                name="safra_s_qnty"
-                                            />
-                                        </div>
-
-                                        <div className="col-span-1">
-                                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                                Remaining Quantity
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder="Remaining Quantity"
-                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                                onChange={handleChange}
-                                                value={safra_r_qnty}
-                                                name="safra_r_qnty"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="col-span-1">
-                                        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                            Manifested/ instructed
-                                        </label>
-                                        <div className="flex gap-5">
-                                            <CheckboxFour title={"Yes"} />
-                                            <CheckboxFour title={"No"} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-span-2 gap-5 grid grid-cols-2">
-                                <div className="col-span-2">
-                                    <div className="border-b border-stroke  py-4 dark:border-strokedark">
-                                        <h3 className="font-medium text-black dark:text-white">
-                                            Freash Water On board
-                                        </h3>
-                                    </div>
-                                </div>
-                                <div className="col-span-2 gap-5 grid grid-cols-2">
-                                    <div className="col-span-1 gap-5 grid grid-cols-2">
-                                        <div className="col-span-1">
-                                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                                Quantity will Supply
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder="Quantity will Supply"
-                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                                onChange={handleChange}
-                                                value={fresh_water_s_qnty}
-                                                name="fresh_water_s_qnty"
-                                            />
-                                        </div>
-
-                                        <div className="col-span-1">
-                                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                                Remaining Quantity
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder="Remaining Quantity"
-                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                                onChange={handleChange}
-                                                value={fresh_water_r_qnty}
-                                                name="fresh_water_r_qnty"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="col-span-1">
-                                        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                            Manifested/ instructed
-                                        </label>
-                                        <div className="flex gap-5">
-                                            <CheckboxFour title={"Yes"} />
-                                            <CheckboxFour title={"No"} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div className="col-span-2 gap-5 grid grid-cols-2">
-                                <div className="col-span-2">
-                                    <div className="border-b border-stroke  py-4 dark:border-strokedark">
-                                        <h3 className="font-medium text-black dark:text-white">
-                                            WBM On board
-                                        </h3>
-                                    </div>
-                                </div>
-                                <div className="col-span-2 gap-5 grid grid-cols-2">
-                                    <div className="col-span-1 gap-5 grid grid-cols-2">
-                                        <div className="col-span-1">
-                                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                                Quantity will Supply
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder="Quantity will Supply"
-                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                                onChange={handleChange}
-                                                value={wbm_s_qnty}
-                                                name="wbm_s_qnty"
-                                            />
-                                        </div>
-
-                                        <div className="col-span-1">
-                                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                                Remaining Quantity
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder="Remaining Quantity"
-                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                                onChange={handleChange}
-                                                value={wbm_r_qnty}
-                                                name="wbm_r_qnty"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="col-span-1">
-                                        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                            Manifested/ instructed
-                                        </label>
-                                        <div className="flex gap-5">
-                                            <CheckboxFour title={"Yes"} />
-                                            <CheckboxFour title={"No"} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-span-2 gap-5 grid grid-cols-2">
-                                <div className="col-span-2">
-                                    <div className="border-b border-stroke  py-4 dark:border-strokedark">
-                                        <h3 className="font-medium text-black dark:text-white">
-                                            Brine On board
-                                        </h3>
-                                    </div>
-                                </div>
-                                <div className="col-span-2 gap-5 grid grid-cols-2">
-                                    <div className="col-span-1 gap-5 grid grid-cols-2">
-                                        <div className="col-span-1">
-                                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                                Quantity will Supply
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder="Quantity will Supply"
-                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                                onChange={handleChange}
-                                                value={brine_s_qnty}
-                                                name="brine_s_qnty"
-                                            />
-                                        </div>
-
-                                        <div className="col-span-1">
-                                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                                Remaining Quantity
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder="Remaining Quantity"
-                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                                onChange={handleChange}
-                                                value={brine_r_qnty}
-                                                name="brine_r_qnty"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="col-span-1">
-                                        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                            Manifested/ instructed
-                                        </label>
-                                        <div className="flex gap-5">
-                                            <CheckboxFour title={"Yes"} />
-                                            <CheckboxFour title={"No"} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-span-2 gap-5 grid grid-cols-2">
-                                <div className="col-span-2">
-                                    <div className="border-b border-stroke  py-4 dark:border-strokedark">
-                                        <h3 className="font-medium text-black dark:text-white">
-                                            Brine On board
-                                        </h3>
-                                    </div>
-                                </div>
-                                <div className="col-span-2 gap-5 grid grid-cols-2">
-                                    <div className="col-span-1 gap-5 grid grid-cols-2">
-                                        <div className="col-span-1">
-                                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                                Quantity will Supply
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder="Quantity will Supply"
-                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                            />
-                                        </div>
-
-                                        <div className="col-span-1">
-                                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                                Remaining Quantity
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder="Remaining Quantity"
-                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="col-span-1">
-                                        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                                            Manifested/ instructed
-                                        </label>
-                                        <div className="flex gap-5">
-                                            <CheckboxFour title={"Yes"} />
-                                            <CheckboxFour title={"No"} />
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
