@@ -223,10 +223,15 @@ export default function Home() {
                             <div className="grid grid-cols-2 gap-5.5 p-6.5">
                                 <div className="col-span-2 gap-5 grid grid-cols-2">
                                     <div className="col-span-2">
-                                        <div className="border-b border-stroke  py-4 dark:border-strokedark">
+                                        <div className="gap-5 grid grid-cols-2 border-y items-center border-stroke  py-4 dark:border-strokedark">
                                             <h3 className="font-medium text-black dark:text-white">
                                                 Cement On board
                                             </h3>
+                                            <input
+                                                type="number"
+                                                placeholder="Cement On board"
+                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            />
                                         </div>
                                     </div>
                                     <div className="col-span-2 gap-5 grid grid-cols-2">
@@ -295,10 +300,15 @@ export default function Home() {
 
                                 <div className="col-span-2 gap-5 grid grid-cols-2">
                                     <div className="col-span-2">
-                                        <div className="border-b border-stroke  py-4 dark:border-strokedark">
+                                        <div className="gap-5 grid grid-cols-2 border-y items-center border-stroke  py-4 dark:border-strokedark">
                                             <h3 className="font-medium text-black dark:text-white">
                                                 Blended Cmenet On board
                                             </h3>
+                                            <input
+                                                type="number"
+                                                placeholder="Blended Cmenet On board"
+                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            />
                                         </div>
                                     </div>
                                     <div className="col-span-2 gap-5 grid grid-cols-2">
@@ -365,10 +375,15 @@ export default function Home() {
 
                                 <div className="col-span-2 gap-5 grid grid-cols-2">
                                     <div className="col-span-2">
-                                        <div className="border-b border-stroke  py-4 dark:border-strokedark">
+                                        <div className="gap-5 grid grid-cols-2 border-y items-center border-stroke  py-4 dark:border-strokedark">
                                             <h3 className="font-medium text-black dark:text-white">
                                                 Safra On board
                                             </h3>
+                                            <input
+                                                type="number"
+                                                placeholder="Safra On board"
+                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            />
                                         </div>
                                     </div>
                                     <div className="col-span-2 gap-5 grid grid-cols-2">
@@ -436,10 +451,15 @@ export default function Home() {
 
                                 <div className="col-span-2 gap-5 grid grid-cols-2">
                                     <div className="col-span-2">
-                                        <div className="border-b border-stroke  py-4 dark:border-strokedark">
+                                        <div className="gap-5 grid grid-cols-2 border-y items-center border-stroke  py-4 dark:border-strokedark">
                                             <h3 className="font-medium text-black dark:text-white">
                                                 Freash Water On board
                                             </h3>
+                                            <input
+                                                type="number"
+                                                placeholder="Freash Water On board"
+                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            />
                                         </div>
                                     </div>
                                     <div className="col-span-2 gap-5 grid grid-cols-2">
@@ -507,10 +527,15 @@ export default function Home() {
 
                                 <div className="col-span-2 gap-5 grid grid-cols-2">
                                     <div className="col-span-2">
-                                        <div className="border-b border-stroke  py-4 dark:border-strokedark">
+                                        <div className="gap-5 grid grid-cols-2 border-y items-center border-stroke  py-4 dark:border-strokedark">
                                             <h3 className="font-medium text-black dark:text-white">
                                                 WBM On board
                                             </h3>
+                                            <input
+                                                type="number"
+                                                placeholder=" WBM On board"
+                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            />
                                         </div>
                                     </div>
                                     <div className="col-span-2 gap-5 grid grid-cols-2">
@@ -577,10 +602,15 @@ export default function Home() {
 
                                 <div className="col-span-2 gap-5 grid grid-cols-2">
                                     <div className="col-span-2">
-                                        <div className="border-b border-stroke  py-4 dark:border-strokedark">
+                                        <div className="gap-5 grid grid-cols-2 border-y items-center border-stroke  py-4 dark:border-strokedark">
                                             <h3 className="font-medium text-black dark:text-white">
                                                 Brine On board
                                             </h3>
+                                            <input
+                                                type="number"
+                                                placeholder="Brine On board"
+                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            />
                                         </div>
                                     </div>
                                     <div className="col-span-2 gap-5 grid grid-cols-2">
