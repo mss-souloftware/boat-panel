@@ -22,67 +22,66 @@ const AllBoats: React.FC<CategoryComponentProps> = ({ category }) => {
 
   // console.log(category);
 
-  if (category) {
-    useEffect(() => {
-      const fetchBoatsWithCat = async () => {
-        try {
-          const path = `/boats?category=${category}`;
-          const url = buildUrl(path);
+  useEffect(() => {
+    const fetchBoatsWithCat = async () => {
+      try {
+        const path = `/boats?category=${category}`;
+        const url = buildUrl(path);
 
-          let storedData = localStorage.getItem('userData');
-          let token = null;
-          if (storedData) {
-            let userData = JSON.parse(storedData);
-            token = userData.token;
-            if (!token) {
-              throw new Error('Authorization Token not provided.');
-            }
+        let storedData = localStorage.getItem('userData');
+        let token = null;
+        if (storedData) {
+          let userData = JSON.parse(storedData);
+          token = userData.token;
+          if (!token) {
+            throw new Error('Authorization Token not provided.');
           }
-
-          const response = await axios.get(url, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-          console.log(response.data.data.boats);
-          setBoatsCat(response.data.data.boats);
-        } catch (error) {
-          console.error('Error fetching Boats:', error);
         }
-      };
-      fetchBoatsWithCat();
-    }, []);
-  } else {
-    useEffect(() => {
-      const fetchBoats = async () => {
-        try {
-          const path = '/boats';
-          const url = buildUrl(path);
 
-          let storedData = localStorage.getItem('userData');
-          let token = null;
-          if (storedData) {
-            let userData = JSON.parse(storedData);
-            token = userData.token;
-            if (!token) {
-              throw new Error('Authorization Token not provided.');
-            }
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`
           }
+        });
+        console.log(response.data.data.boats);
+        setBoatsCat(response.data.data.boats);
+      } catch (error) {
+        console.error('Error fetching Boats:', error);
+      }
+    };
+    fetchBoatsWithCat();
+  }, []);
 
-          const response = await axios.get(url, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
+  useEffect(() => {
+    const fetchBoats = async () => {
+      try {
+        const path = '/boats';
+        const url = buildUrl(path);
 
-          setBoats(response.data.data.boats);
-        } catch (error) {
-          console.error('Error fetching Boats:', error);
+        let storedData = localStorage.getItem('userData');
+        let token = null;
+        if (storedData) {
+          let userData = JSON.parse(storedData);
+          token = userData.token;
+          if (!token) {
+            throw new Error('Authorization Token not provided.');
+          }
         }
-      };
-      fetchBoats();
-    }, []);
-  }
+
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        setBoats(response.data.data.boats);
+      } catch (error) {
+        console.error('Error fetching Boats:', error);
+      }
+    };
+    fetchBoats();
+  }, []);
+
   const handleDelete = async (id: String) => {
     const path = `/boats/${id}`;
     const url = buildUrl(path);
