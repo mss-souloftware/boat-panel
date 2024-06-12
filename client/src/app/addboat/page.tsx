@@ -21,7 +21,7 @@ export default function Home() {
     const [nextLocation, setnextLocation] = useState('');
 
     const [category, setBoatCategory] = useState('');
-    const [captainId, setSelectedCaptain] = useState<number>(0);
+    const [captainId, setSelectedCaptain] = useState<string>('');
     const [operationType, setOperationType] = useState('');
     const [arrivalTime, setArrivalTime] = useState('');
     const [departureTime, setDepartureTime] = useState('');
@@ -74,9 +74,10 @@ export default function Home() {
     };
 
     const handleCaptainChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        let captainId: string | number = e.target.value
-        captainId = parseInt(captainId, 10) as number
+        const captainId: string = e.target.value
+        // captainId = parseInt(captainId, 10) as number
         setSelectedCaptain(captainId);
+    
     };
 
     const handleOperationType = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -121,7 +122,7 @@ export default function Home() {
             setcurrentLocation('');
             setnextLocation('');
             setBoatCategory('');
-            setSelectedCaptain(0);
+            setSelectedCaptain('');
             setObmSupply(0);
             setObmRemaining(0);
             setArrivalTime('');

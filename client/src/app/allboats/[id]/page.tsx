@@ -31,6 +31,7 @@ interface Boats {
     brine_r_qnty: string,
     category: string,
     captainId: string,
+    Captain: any,
     operationType: string,
     arrivalTime: string,
     departureTime: string,
@@ -134,7 +135,7 @@ export default function BoatDetails() {
                         <p className="font-medium">Boat Captain:</p>
                     </div>
                     <div className="col-span-3 flex items-center">
-                        <p className="">{boat.captainId}</p>
+                        <p className="">{boat.Captain.fullName}</p>
                     </div>
                 </div>
                 <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">

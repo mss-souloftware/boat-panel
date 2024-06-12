@@ -14,6 +14,7 @@ interface Boat {
     Safra: any;
     FreshWater: any;
     WBM: any;
+    Diesel: any;
     Brine: any;
     name: string;
     number: string;
@@ -232,17 +233,17 @@ export default function Home() {
                                 <p className="font-medium">Diesel On board:</p>
                             </div>
                             <div className="col-span-1 flex items-center">
-                                <p className="">-</p>
+                                {/* <p className="">{boat.Diesel.manifested ? 'Yes' : 'No'}</p> */}
                             </div>
                             <div className="col-span-1">
                                 <p className="font-medium">Quantity will Supply:</p>
                                 <br></br>
-                                <p className="">-</p>
+                                {/* <p className="">{boat?.Diesel.quantitySupplied}</p> */}
                             </div>
                             <div className="col-span-1">
                                 <p className="font-medium">Remaining Quantity:</p>
                                 <br></br>
-                                <p className="">-</p>
+                                {/* <p className="">{boat?.Diesel.remainingQuantity}</p> */}
                             </div>
                         </div>
 

@@ -16,6 +16,8 @@ export default function Home() {
     const [blended_r_qnty, setblended_r_qnty] = useState<number>();
     const [safra_s_qnty, setsafra_s_qnty] = useState<number>();
     const [safra_r_qnty, setsafra_r_qnty] = useState<number>();
+    const [diesel_s_qnty, setdiesel_s_qnty] = useState<number>();
+    const [diesel_r_qnty, setdiesel_r_qnty] = useState<number>();
     const [fresh_water_s_qnty, setfresh_water_s_qnty] = useState<number>();
     const [fresh_water_r_qnty, setfresh_water_r_qnty] = useState<number>();
     const [wbm_s_qnty, setwbm_s_qnty] = useState<number>();
@@ -25,6 +27,7 @@ export default function Home() {
     const [cementManifested, setCementManifested] = useState(false);
     const [bcementManifested, setBCementManifested] = useState(false);
     const [safraManifested, setSafraManifested] = useState(false);
+    const [dieselManifested, setDieselManifested] = useState(false);
     const [fwaterManifested, setFwaterManifested] = useState(false);
     const [wbmManifested, setWbmManifested] = useState(false);
     const [brineManifested, setBrineManifested] = useState(false);
@@ -41,6 +44,9 @@ export default function Home() {
                 break;
             case 'safraManifested':
                 setSafraManifested(value === 'true');
+                break;
+            case 'dieselManifested':
+                setDieselManifested(value === 'true');
                 break;
             case 'fwaterManifested':
                 setFwaterManifested(value === 'true');
@@ -76,6 +82,12 @@ export default function Home() {
                 break;
             case 'safra_r_qnty':
                 setsafra_r_qnty(Number(value));
+                break;
+            case 'diesel_s_qnty':
+                setdiesel_s_qnty(Number(value));
+                break;
+            case 'diesel_r_qnty':
+                setdiesel_r_qnty(Number(value));
                 break;
             case 'fresh_water_s_qnty':
                 setfresh_water_s_qnty(Number(value));
@@ -155,6 +167,12 @@ export default function Home() {
                     remainingQuantity: safra_r_qnty,
                     manifested: safraManifested
                 },
+                Diesel: {
+                    quantitySupplied: diesel_s_qnty,
+                    remainingQuantity: diesel_r_qnty,
+                    manifested: dieselManifested,
+                    additionalInfo: '0'
+                },
                 FreshWater: {
                     quantitySupplied: fresh_water_s_qnty,
                     remainingQuantity: fresh_water_r_qnty,
@@ -223,7 +241,7 @@ export default function Home() {
                             <div className="grid grid-cols-2 gap-5.5 p-6.5">
                                 <div className="col-span-2 gap-5 grid grid-cols-2">
                                     <div className="col-span-2">
-                                        <div className="gap-5 grid grid-cols-2 border-y items-center border-stroke  py-4 dark:border-strokedark">
+                                        <div className="gap-5 grid grid-cols-2 items-center border-stroke  py-4 dark:border-strokedark">
                                             <h3 className="font-medium text-black dark:text-white">
                                                 Cement On board
                                             </h3>
@@ -300,7 +318,7 @@ export default function Home() {
 
                                 <div className="col-span-2 gap-5 grid grid-cols-2">
                                     <div className="col-span-2">
-                                        <div className="gap-5 grid grid-cols-2 border-y items-center border-stroke  py-4 dark:border-strokedark">
+                                        <div className="gap-5 grid grid-cols-2 border-t items-center border-stroke  py-4 dark:border-strokedark">
                                             <h3 className="font-medium text-black dark:text-white">
                                                 Blended Cmenet On board
                                             </h3>
@@ -375,7 +393,7 @@ export default function Home() {
 
                                 <div className="col-span-2 gap-5 grid grid-cols-2">
                                     <div className="col-span-2">
-                                        <div className="gap-5 grid grid-cols-2 border-y items-center border-stroke  py-4 dark:border-strokedark">
+                                        <div className="gap-5 grid grid-cols-2 border-t items-center border-stroke  py-4 dark:border-strokedark">
                                             <h3 className="font-medium text-black dark:text-white">
                                                 Safra On board
                                             </h3>
@@ -451,7 +469,83 @@ export default function Home() {
 
                                 <div className="col-span-2 gap-5 grid grid-cols-2">
                                     <div className="col-span-2">
-                                        <div className="gap-5 grid grid-cols-2 border-y items-center border-stroke  py-4 dark:border-strokedark">
+                                        <div className="gap-5 grid grid-cols-2 border-t items-center border-stroke  py-4 dark:border-strokedark">
+                                            <h3 className="font-medium text-black dark:text-white">
+                                                Diesel On board
+                                            </h3>
+                                            <input
+                                                type="number"
+                                                placeholder="Diesel On board"
+                                                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-span-2 gap-5 grid grid-cols-2">
+                                        <div className="col-span-1">
+                                            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                                                Manifested/ instructed
+                                            </label>
+                                            <div className="flex gap-5">
+                                                <label>
+                                                    <input
+                                                        className='mr-1'
+                                                        type="radio"
+                                                        value="true"
+                                                        checked={dieselManifested === true}
+                                                        onChange={handleRadioChange}
+                                                        name='dieselManifested'
+                                                    />
+                                                    Yes
+                                                </label>
+                                                <label>
+                                                    <input
+                                                        className='mr-1'
+                                                        type="radio"
+                                                        value="false"
+                                                        checked={dieselManifested === false}
+                                                        onChange={handleRadioChange}
+                                                        name='dieselManifested'
+                                                    />
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div className="col-span-1 gap-5 grid grid-cols-2">
+                                            <div className="col-span-1">
+                                                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                                                    Quantity will Supply
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    placeholder="Quantity will Supply"
+                                                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                    onChange={handleChange}
+                                                    value={diesel_s_qnty}
+                                                    name="diesel_s_qnty"
+                                                />
+                                            </div>
+
+                                            <div className="col-span-1">
+                                                <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                                                    Remaining Quantity
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    placeholder="Remaining Quantity"
+                                                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                    onChange={handleChange}
+                                                    value={diesel_r_qnty}
+                                                    name="diesel_r_qnty"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="col-span-2 gap-5 grid grid-cols-2">
+                                    <div className="col-span-2">
+                                        <div className="gap-5 grid grid-cols-2 border-t items-center border-stroke  py-4 dark:border-strokedark">
                                             <h3 className="font-medium text-black dark:text-white">
                                                 Freash Water On board
                                             </h3>
@@ -527,7 +621,7 @@ export default function Home() {
 
                                 <div className="col-span-2 gap-5 grid grid-cols-2">
                                     <div className="col-span-2">
-                                        <div className="gap-5 grid grid-cols-2 border-y items-center border-stroke  py-4 dark:border-strokedark">
+                                        <div className="gap-5 grid grid-cols-2 border-t items-center border-stroke  py-4 dark:border-strokedark">
                                             <h3 className="font-medium text-black dark:text-white">
                                                 WBM On board
                                             </h3>
@@ -602,7 +696,7 @@ export default function Home() {
 
                                 <div className="col-span-2 gap-5 grid grid-cols-2">
                                     <div className="col-span-2">
-                                        <div className="gap-5 grid grid-cols-2 border-y items-center border-stroke  py-4 dark:border-strokedark">
+                                        <div className="gap-5 grid grid-cols-2 border-t items-center border-stroke  py-4 dark:border-strokedark">
                                             <h3 className="font-medium text-black dark:text-white">
                                                 Brine On board
                                             </h3>
