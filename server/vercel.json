@@ -3,7 +3,7 @@
     "name": "boat-panel",
     "builds": [
         {
-            "src": "./index.js",
+            "src": "./dist/server.js",
             "use": "@vercel/node"
         }
     ],
