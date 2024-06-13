@@ -2,26 +2,31 @@
 import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import axios from 'axios';
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
-import CheckboxFour from "@/components/Checkboxes/CheckboxFour";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { buildUrl } from '../../../../utils/buildUrl';
 
 export default function Home() {
 
+    const [cement_info, setcement_info] = useState<string>();
     const [cement_s_qnty, setcement_s_qnty] = useState<number>();
     const [cement_r_qnty, setcement_r_qnty] = useState<number>();
+    const [blended_info, setblended_info] = useState<string>();
     const [blended_s_qnty, setblended_s_qnty] = useState<number>();
     const [blended_r_qnty, setblended_r_qnty] = useState<number>();
+    const [safra_info, setsafra_info] = useState<string>();
     const [safra_s_qnty, setsafra_s_qnty] = useState<number>();
     const [safra_r_qnty, setsafra_r_qnty] = useState<number>();
+    const [diesel_info, setdiesel_info] = useState<string>();
     const [diesel_s_qnty, setdiesel_s_qnty] = useState<number>();
     const [diesel_r_qnty, setdiesel_r_qnty] = useState<number>();
+    const [fresh_water_info, setfresh_water_info] = useState<string>();
     const [fresh_water_s_qnty, setfresh_water_s_qnty] = useState<number>();
     const [fresh_water_r_qnty, setfresh_water_r_qnty] = useState<number>();
+    const [wbm_info, setwbm_info] = useState<string>();
     const [wbm_s_qnty, setwbm_s_qnty] = useState<number>();
     const [wbm_r_qnty, setwbm_r_qnty] = useState<number>();
+    const [brine_info, setbrine_info] = useState<string>();
     const [brine_s_qnty, setbrine_s_qnty] = useState<number>();
     const [brine_r_qnty, setbrine_r_qnty] = useState<number>();
     const [cementManifested, setCementManifested] = useState(false);
@@ -65,11 +70,17 @@ export default function Home() {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         switch (name) {
+            case 'cement_info':
+                setcement_info(value);
+                break;
             case 'cement_s_qnty':
                 setcement_s_qnty(Number(value));
                 break;
             case 'cement_r_qnty':
                 setcement_r_qnty(Number(value));
+                break;
+            case 'blended_info':
+                setblended_info(value);
                 break;
             case 'blended_s_qnty':
                 setblended_s_qnty(Number(value));
@@ -77,11 +88,17 @@ export default function Home() {
             case 'blended_r_qnty':
                 setblended_r_qnty(Number(value));
                 break;
+            case 'safra_info':
+                setsafra_info(value);
+                break;
             case 'safra_s_qnty':
                 setsafra_s_qnty(Number(value));
                 break;
             case 'safra_r_qnty':
                 setsafra_r_qnty(Number(value));
+                break;
+            case 'diesel_info':
+                setdiesel_info(value);
                 break;
             case 'diesel_s_qnty':
                 setdiesel_s_qnty(Number(value));
@@ -89,17 +106,26 @@ export default function Home() {
             case 'diesel_r_qnty':
                 setdiesel_r_qnty(Number(value));
                 break;
+            case 'fresh_water_info':
+                setfresh_water_info(value);
+                break;
             case 'fresh_water_s_qnty':
                 setfresh_water_s_qnty(Number(value));
                 break;
             case 'fresh_water_r_qnty':
                 setfresh_water_r_qnty(Number(value));
                 break;
+            case 'wbm_info':
+                setwbm_info(value);
+                break;
             case 'wbm_s_qnty':
                 setwbm_s_qnty(Number(value));
                 break;
             case 'wbm_r_qnty':
                 setwbm_r_qnty(Number(value));
+                break;
+            case 'brine_info':
+                setbrine_info(value);
                 break;
             case 'brine_s_qnty':
                 setbrine_s_qnty(Number(value));
@@ -156,37 +182,43 @@ export default function Home() {
                     quantitySupplied: cement_s_qnty,
                     remainingQuantity: cement_r_qnty,
                     manifested: cementManifested,
+                    additionalInfo: cement_info
                 },
                 BlendedCement: {
                     quantitySupplied: blended_s_qnty,
                     remainingQuantity: blended_r_qnty,
-                    manifested: bcementManifested
+                    manifested: bcementManifested,
+                    additionalInfo: blended_info
                 },
                 Safra: {
                     quantitySupplied: safra_s_qnty,
                     remainingQuantity: safra_r_qnty,
-                    manifested: safraManifested
+                    manifested: safraManifested,
+                    additionalInfo: safra_info
                 },
                 Diesel: {
                     quantitySupplied: diesel_s_qnty,
                     remainingQuantity: diesel_r_qnty,
                     manifested: dieselManifested,
-                    additionalInfo: '0'
+                    additionalInfo: diesel_info
                 },
                 FreshWater: {
                     quantitySupplied: fresh_water_s_qnty,
                     remainingQuantity: fresh_water_r_qnty,
-                    manifested: fwaterManifested
+                    manifested: fwaterManifested,
+                    additionalInfo: fresh_water_info
                 },
                 WBM: {
                     quantitySupplied: wbm_s_qnty,
                     remainingQuantity: wbm_r_qnty,
-                    manifested: wbmManifested
+                    manifested: wbmManifested,
+                    additionalInfo: wbm_info
                 },
                 Brine: {
                     quantitySupplied: brine_s_qnty,
                     remainingQuantity: brine_r_qnty,
-                    manifested: brineManifested
+                    manifested: brineManifested,
+                    additionalInfo: brine_info
                 }
             };
 
@@ -249,6 +281,9 @@ export default function Home() {
                                                 type="number"
                                                 placeholder="Cement On board"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={cement_info}
+                                                name="cement_info"
                                             />
                                         </div>
                                     </div>
@@ -326,6 +361,9 @@ export default function Home() {
                                                 type="number"
                                                 placeholder="Blended Cmenet On board"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={blended_info}
+                                                name="blended_info"
                                             />
                                         </div>
                                     </div>
@@ -401,6 +439,9 @@ export default function Home() {
                                                 type="number"
                                                 placeholder="Safra On board"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={safra_info}
+                                                name="safra_info"
                                             />
                                         </div>
                                     </div>
@@ -477,6 +518,9 @@ export default function Home() {
                                                 type="number"
                                                 placeholder="Diesel On board"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={diesel_info}
+                                                name="diesel_info"
                                             />
                                         </div>
                                     </div>
@@ -553,6 +597,9 @@ export default function Home() {
                                                 type="number"
                                                 placeholder="Freash Water On board"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={fresh_water_info}
+                                                name="fresh_water_info"
                                             />
                                         </div>
                                     </div>
@@ -629,6 +676,9 @@ export default function Home() {
                                                 type="number"
                                                 placeholder=" WBM On board"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={wbm_info}
+                                                name="wbm_info"
                                             />
                                         </div>
                                     </div>
@@ -704,6 +754,9 @@ export default function Home() {
                                                 type="number"
                                                 placeholder="Brine On board"
                                                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                onChange={handleChange}
+                                                value={brine_info}
+                                                name="brine_info"
                                             />
                                         </div>
                                     </div>

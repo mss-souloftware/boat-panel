@@ -99,7 +99,7 @@ export default function Home() {
                             </h4>
                         </div>
 
-                        <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
+                        <div className="grid grid-cols-5 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
                             <div className="col-span-1 flex items-center">
                                 <p className="font-medium">Boat Number:</p>
                             </div>
@@ -107,7 +107,7 @@ export default function Home() {
                                 <p className="">{boat?.number}</p>
                             </div>
                         </div>
-                        <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
+                        <div className="grid grid-cols-5 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
                             <div className="col-span-1 flex items-center">
                                 <p className="font-medium">Current location:</p>
                             </div>
@@ -115,7 +115,7 @@ export default function Home() {
                                 <p className="">{boat?.currentLocation}</p>
                             </div>
                         </div>
-                        <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
+                        <div className="grid grid-cols-5 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
                             <div className="col-span-1 flex items-center">
                                 <p className="font-medium">Next Location:</p>
                             </div>
@@ -123,7 +123,7 @@ export default function Home() {
                                 <p className="">{boat?.nextLocation}</p>
                             </div>
                         </div>
-                        <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
+                        <div className="grid grid-cols-5 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
                             <div className="col-span-1 flex items-center">
                                 <p className="font-medium">Opearion Type:</p>
                             </div>
@@ -131,7 +131,7 @@ export default function Home() {
                                 <p className="">{boat?.operationType}</p>
                             </div>
                         </div>
-                        <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
+                        <div className="grid grid-cols-5 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
                             <div className="col-span-1 flex items-center">
                                 <p className="font-medium">Arrival Time:</p>
                             </div>
@@ -139,7 +139,7 @@ export default function Home() {
                                 <p className="">{covertISOtoDate(boat?.arrivalTime)}</p>
                             </div>
                         </div>
-                        <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
+                        <div className="grid grid-cols-5 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
                             <div className="col-span-1 flex items-center">
                                 <p className="font-medium">Departure Time:</p>
                             </div>
@@ -171,11 +171,16 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
+                        <div className="grid grid-cols-5 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
                             <div className="col-span-1 flex items-center">
                                 <p className="font-medium">Cement On board:</p>
                             </div>
                             <div className="col-span-1 flex items-center">
+                                <p>{boat.Cement.additionalInfo}</p>
+                            </div>
+                            <div className="col-span-1">
+                                <p className="font-medium">Manifested/ instructed:</p>
+                                <br></br>
                                 <p>{boat.Cement.manifested ? 'Yes' : 'No'}</p>
                             </div>
                             <div className="col-span-1">
@@ -190,11 +195,16 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
+                        <div className="grid grid-cols-5 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
                             <div className="col-span-1 flex items-center">
-                                <p className="font-medium">Blended Cmenet On board:</p>
+                                <p className="font-medium">Blended Cemnet On board:</p>
                             </div>
                             <div className="col-span-1 flex items-center">
+                                <p>{boat.BlendedCement.additionalInfo}</p>
+                            </div>
+                            <div className="col-span-1">
+                                <p className="font-medium">Manifested/ instructed:</p>
+                                <br></br>
                                 <p>{boat.BlendedCement.manifested ? 'Yes' : 'No'}</p>
                             </div>
                             <div className="col-span-1">
@@ -209,11 +219,16 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
+                        <div className="grid grid-cols-5 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
                             <div className="col-span-1 flex items-center">
                                 <p className="font-medium">Safra On board:</p>
                             </div>
                             <div className="col-span-1 flex items-center">
+                                <p>{boat.Safra.additionalInfo}</p>
+                            </div>
+                            <div className="col-span-1">
+                                <p className="font-medium">Manifested/ instructed:</p>
+                                <br></br>
                                 <p>{boat.Safra.manifested ? 'Yes' : 'No'}</p>
                             </div>
                             <div className="col-span-1">
@@ -228,30 +243,40 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
+                        <div className="grid grid-cols-5 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
                             <div className="col-span-1 flex items-center">
                                 <p className="font-medium">Diesel On board:</p>
                             </div>
                             <div className="col-span-1 flex items-center">
-                                {/* <p className="">{boat.Diesel.manifested ? 'Yes' : 'No'}</p> */}
+                                <p>{boat.Diesel.additionalInfo}</p>
+                            </div>
+                            <div className="col-span-1">
+                                <p className="font-medium">Manifested/ instructed:</p>
+                                <br></br>
+                                <p>{boat.Diesel.manifested ? 'Yes' : 'No'}</p>
                             </div>
                             <div className="col-span-1">
                                 <p className="font-medium">Quantity will Supply:</p>
                                 <br></br>
-                                {/* <p className="">{boat?.Diesel.quantitySupplied}</p> */}
+                                <p className="">{boat?.Diesel.quantitySupplied}</p>
                             </div>
                             <div className="col-span-1">
                                 <p className="font-medium">Remaining Quantity:</p>
                                 <br></br>
-                                {/* <p className="">{boat?.Diesel.remainingQuantity}</p> */}
+                                <p className="">{boat?.Diesel.remainingQuantity}</p>
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
+                        <div className="grid grid-cols-5 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
                             <div className="col-span-1 flex items-center">
                                 <p className="font-medium">Freash Water On board:</p>
                             </div>
                             <div className="col-span-1 flex items-center">
+                                <p>{boat.FreshWater.additionalInfo}</p>
+                            </div>
+                            <div className="col-span-1">
+                                <p className="font-medium">Manifested/ instructed:</p>
+                                <br></br>
                                 <p>{boat.FreshWater.manifested ? 'Yes' : 'No'}</p>
                             </div>
                             <div className="col-span-1">
@@ -266,11 +291,16 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
+                        <div className="grid grid-cols-5 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
                             <div className="col-span-1 flex items-center">
                                 <p className="font-medium">WBM On board:</p>
                             </div>
                             <div className="col-span-1 flex items-center">
+                                <p>{boat.WBM.additionalInfo}</p>
+                            </div>
+                            <div className="col-span-1">
+                                <p className="font-medium">Manifested/ instructed:</p>
+                                <br></br>
                                 <p>{boat.WBM.manifested ? 'Yes' : 'No'}</p>
                             </div>
                             <div className="col-span-1">
@@ -285,11 +315,16 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-4 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-4 md:px-6 2xl:px-7.5">
+                        <div className="grid grid-cols-5 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
                             <div className="col-span-1 flex items-center">
                                 <p className="font-medium">Brine On board:</p>
                             </div>
                             <div className="col-span-1 flex items-center">
+                                <p>{boat.Brine.additionalInfo}</p>
+                            </div>
+                            <div className="col-span-1">
+                                <p className="font-medium">Manifested/ instructed:</p>
+                                <br></br>
                                 <p>{boat.Brine.manifested ? 'Yes' : 'No'}</p>
                             </div>
                             <div className="col-span-1">
