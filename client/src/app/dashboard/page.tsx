@@ -22,7 +22,7 @@ interface TotalsCount {
 
 
 interface Boats {
-  _id: String; name: String; number: String; currentLocation: String; nextLocation: String; cement_s_qnty: String; cement_r_qnty: String; blended_s_qnty: String; blended_r_qnty: String; safra_s_qnty: String; safra_r_qnty: String; fresh_water_s_qnty: String; fresh_water_r_qnty: String; wbm_s_qnty: String; wbm_r_qnty: String; brine_s_qnty: String; brine_r_qnty: String; category: String, captainId: String, operationType: String,
+  _id: String; name: String; number: String; currentLocation: String; nextLocation: String; cement_s_qnty: String; cement_r_qnty: String; blended_s_qnty: String; blended_r_qnty: String; safra_s_qnty: String; safra_r_qnty: String; fresh_water_s_qnty: String; fresh_water_r_qnty: String; wbm_s_qnty: String; wbm_r_qnty: String; brine_s_qnty: String; brine_r_qnty: String; category: String, captainId: String, operationType: String, Captain: any,
 }
 
 export default function Home() {
@@ -82,6 +82,7 @@ export default function Home() {
         });
 
         setBoats(response.data.data.boats);
+        console.log(response.data.data.boats)
       } catch (error) {
         console.error('Error fetching boats:', error);
       }
@@ -112,17 +113,17 @@ export default function Home() {
               <b>A</b>
             </CardDataStats>
           </Link>
-          <Link href="#">
+          <Link href="/allboats?category=B">
             <CardDataStats title="Boats" total={totalsCount.totalBoatsCategoryWise.B} rate="">
               <b>B</b>
             </CardDataStats>
           </Link>
-          <Link href="#">
+          <Link href="/allboats?category=C">
             <CardDataStats title="Boats" total={totalsCount.totalBoatsCategoryWise.C} rate="">
               <b>C</b>
             </CardDataStats>
           </Link>
-          <Link href="#">
+          <Link href="/allboats?category=D">
             <CardDataStats title="Boats" total={totalsCount.totalBoatsCategoryWise.D} rate="">
               <b>D</b>
             </CardDataStats>
@@ -188,7 +189,7 @@ export default function Home() {
                 <p className="text-sm text-black dark:text-white text-center">{boat.category}</p>
               </div>
               <div className="col-span-1 flex items-center">
-                <p className="text-sm text-black dark:text-white">{boat.captainId}</p>
+                <p className="text-sm text-black dark:text-white">{boat.Captain.fullName}</p>
               </div>
               <div className="col-span-1 flex items-center">
                 <p className="text-sm text-black dark:text-white">{boat.operationType}</p>
